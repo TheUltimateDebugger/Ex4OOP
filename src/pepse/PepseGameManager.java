@@ -7,6 +7,8 @@ import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.util.Vector2;
+import pepse.world.Avatar;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
@@ -35,9 +37,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(night, Layer.STATIC_OBJECTS);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), 30);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
+        GameObject avatar = new Avatar(new Vector2(50, 50), inputListener, imageReader);
+        gameObjects().addGameObject(avatar);
     }
-
-
-
-
 }
