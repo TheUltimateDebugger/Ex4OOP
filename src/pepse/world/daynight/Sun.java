@@ -1,5 +1,6 @@
 package pepse.world.daynight;
 import danogl.GameObject;
+import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
@@ -7,17 +8,24 @@ import danogl.util.Vector2;
 import java.awt.*;
 
 public class Sun {
-    //TODO: change the sun parameters into the correct ones: size, position and movement radius
+
+    private static final double MOVEMENT_RADIOS = 650;
+    private static final float SIZE = 100;
+
+    //TODO: change the sun parameters: size, position and movement radius to constants
     public static GameObject create(Vector2 windowDimensions, float cycleLength) {
-        Vector2 initialSunCenter = new Vector2(windowDimensions.x()/2, 100);
+        Vector2 initialSunCenter = new Vector2(windowDimensions.x()/2, windowDimensions.y() * 1/6);
         GameObject sun = new GameObject(initialSunCenter,
-                new Vector2(100, 100),
+                new Vector2(SIZE, SIZE),
                 new OvalRenderable(Color.YELLOW));
+        sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag("sun");
+        Vector2 cycleCenter = new Vector2(windowDimensions.x()/2, windowDimensions.y()*2/3);
         new Transition<Float>(sun,
-                value -> sun.setCenter(new Vector2(
-                (float) (windowDimensions.x() / 2 + 500 * Math.cos(Math.toRadians(value))),
-                (float) (windowDimensions.y() * 2/3 + 500 * Math.sin(Math.toRadians(value))))),
+                (Float angle) -> sun.setCenter
+                        (initialSunCenter.subtract(cycleCenter)
+                                .rotated(angle)
+                                .add(cycleCenter)),
                 0f, 360f,
                 Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
                 Transition.TransitionType.TRANSITION_LOOP, null);
