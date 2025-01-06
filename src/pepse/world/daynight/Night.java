@@ -17,8 +17,8 @@ public class Night {
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         night.setTag("night");
         new Transition<Float>(night, night.renderer()::setOpaqueness, 0f,
-                MIDNIGHT_OPACITY, Transition.CUBIC_INTERPOLATOR_FLOAT,
-                cycleLength, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                MIDNIGHT_OPACITY, Transition.CUBIC_INTERPOLATOR_FLOAT, cycleLength/2,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
         return night;
     }
 
