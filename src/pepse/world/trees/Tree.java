@@ -1,6 +1,7 @@
 package pepse.world.trees;
 
-import danogl.GameObject;
+import danogl.components.ScheduledTask;
+import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
@@ -12,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Tree {
     private static final Color LOG_COLOR = new Color(100, 50, 20);
     private static final Color LEAFS_COLOR = new Color(50, 200, 30);
-    private static final int MINIMUM_LOG_HEIGHT = 4;
-    private static final int MAXIMUM_LOG_GROWTH = 3;
+    private static final int MINIMUM_LOG_HEIGHT = 5;
+    private static final int MAXIMUM_LOG_GROWTH = 2;
     private static final int BRANCH_SIZE = 2;
     private static final float LEAF_PROB = 0.8f;
 
@@ -27,15 +28,23 @@ public class Tree {
     private List<Block> fruits;
 
     public Tree (float startLocationX, float startLocationY, int seed) {
-        this.log = new ArrayList<>();
-        this.leafs = new ArrayList<>();
         Random rand = new Random(Objects.hash(startLocationX, seed));
+        create_log(startLocationX, startLocationY, rand);
+        create_leafs(rand);
+    }
+
+    private void create_log(float startLocationX, float startLocationY, Random rand) {
+        this.log = new ArrayList<>();
         Renderable renderer_log = new RectangleRenderable(ColorSupplier.approximateColor(LOG_COLOR));
         int logHeight = MINIMUM_LOG_HEIGHT + rand.nextInt(MAXIMUM_LOG_GROWTH);
         for (int i = 0; i < logHeight; i++) {
             this.log.add(new Block(new Vector2(startLocationX, startLocationY - (i+1) * Block.SIZE),
                     renderer_log));
         }
+    }
+
+    private void create_leafs(Random rand) {
+        this.leafs = new ArrayList<>();
         for (int x = -BRANCH_SIZE; x <= BRANCH_SIZE; x++) {
             for (int y = -BRANCH_SIZE; y <= BRANCH_SIZE; y++) {
                 if (rand.nextFloat() < LEAF_PROB) {
@@ -43,11 +52,26 @@ public class Tree {
                             approximateColor(LEAFS_COLOR));
                     Block leaf = new Block(new Vector2(log.get(log.size() - 1).getTopLeftCorner()
                             .add(new Vector2(x * Block.SIZE, y * Block.SIZE))), renderer_leafs);
+                    //TODO: decide on good parameters to this
+
+                    Runnable supply_size = () -> new Transition<Float>(leaf,
+                            (Float a) -> leaf.renderer().setRenderableAngle(a),
+                            0f, 30f, Transition.LINEAR_INTERPOLATOR_FLOAT,
+                            2, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                    Runnable supply_angle = () ->new Transition<Float>(leaf,
+                            (Float a) -> leaf.setDimensions(
+                                    new Vector2(Block.SIZE * a, Block.SIZE)),
+                            1f, 0.5f, Transition.LINEAR_INTERPOLATOR_FLOAT,
+                            2, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                    float delay1 = rand.nextFloat();
+                    float delay2 = rand.nextFloat();
+
+                    new ScheduledTask(leaf, delay1, false, supply_size);
+                    new ScheduledTask(leaf, delay2, false, supply_angle);
                     leafs.add(leaf);
                 }
             }
         }
-
     }
 
     public List<Block> getLog() {
