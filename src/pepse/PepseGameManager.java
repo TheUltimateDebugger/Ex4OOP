@@ -15,6 +15,8 @@ import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Flora;
+import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +31,35 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
-        Terrain terrain = new Terrain(windowController.getWindowDimensions(), 0);
+        int seed = 1;
+        Terrain terrain = new Terrain(windowController.getWindowDimensions(), seed);
         List<Block> blocks = terrain.createInRange(0, (int)windowController.getWindowDimensions().x());
         for (Block b : blocks) {
             gameObjects().addGameObject(b, Layer.STATIC_OBJECTS);
         }
         GameObject night = Night.create(windowController.getWindowDimensions(), 30);
-        gameObjects().addGameObject(night, Layer.STATIC_OBJECTS);
+        gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), 30);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
         GameObject avatar = new Avatar(new Vector2(50, 50), inputListener, imageReader);
-        gameObjects().addGameObject(avatar);
+        gameObjects().addGameObject(avatar, Layer.DEFAULT);
         GameObject sun_halo = SunHalo.create(sun);
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
+        Flora flora = new Flora(seed, 0.1f, terrain::groundHeightAt);
+        List<Tree> trees = flora.createInRange(0, (int)windowController.getWindowDimensions().x());
+        for (Tree t : trees) {
+            add_tree(t);
+        }
     }
-
+    private void add_tree(Tree tree) {
+        for (Block log : tree.getLog())
+        {
+            gameObjects().addGameObject(log, Layer.STATIC_OBJECTS);
+        }
+        for (Block b : tree.getLeafs()) {
+            gameObjects().addGameObject(b, Layer.BACKGROUND);
+        }
+    }
 
 
 
