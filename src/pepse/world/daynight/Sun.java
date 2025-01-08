@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Sun {
 
-    private static final double MOVEMENT_RADIOS = 650;
+    private static final double MOVEMENT_RADIOS = 700;
     private static final float SIZE = 100;
 
     //TODO: change the sun parameters: size, position and movement radius to constants

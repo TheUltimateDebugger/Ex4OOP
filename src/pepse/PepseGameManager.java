@@ -31,7 +31,7 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
-        int seed = 0;
+        int seed = 1;
         Terrain terrain = new Terrain(windowController.getWindowDimensions(), seed);
         List<Block> blocks = terrain.createInRange(0, (int)windowController.getWindowDimensions().x());
         for (Block b : blocks) {
@@ -58,6 +58,9 @@ public class PepseGameManager extends GameManager {
         }
         for (Block b : tree.getLeafs()) {
             gameObjects().addGameObject(b, Layer.BACKGROUND);
+        }
+        for (Block f : tree.getFruits()) {
+            gameObjects().addGameObject(f, Layer.STATIC_OBJECTS);
         }
     }
 
