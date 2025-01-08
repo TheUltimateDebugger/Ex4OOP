@@ -20,8 +20,9 @@ public class Tree {
     private static final Color LEAFS_COLOR = new Color(50, 200, 30);
     private static final int MINIMUM_LOG_HEIGHT = 5;
     private static final int MAXIMUM_LOG_GROWTH = 2;
-    private static final int BRANCH_SIZE = 2;
+    public static final int BRANCH_SIZE = 2;
     private static final float LEAF_PROB = 0.8f;
+    private static final float FRUIT_PROB = 0.1f;
 
     private List<Block> log;
     private List<Block> leafs;
@@ -65,7 +66,6 @@ public class Tree {
                             2, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
                     float delay1 = rand.nextFloat();
                     float delay2 = rand.nextFloat();
-
                     new ScheduledTask(leaf, delay1, false, supply_size);
                     new ScheduledTask(leaf, delay2, false, supply_angle);
                     leafs.add(leaf);
@@ -73,6 +73,17 @@ public class Tree {
             }
         }
     }
+
+//    private create_fruit(Random rand) {
+//        this.fruits = new ArrayList<>();
+//        for (int x = -BRANCH_SIZE; x <= BRANCH_SIZE; x++) {
+//            for (int y = -BRANCH_SIZE; y <= BRANCH_SIZE; y++) {
+//                if ( && rand.nextFloat() < FRUIT_PROB) {
+//
+//                }
+//            }
+//        }
+//    }
 
     public List<Block> getLog() {
         return log;

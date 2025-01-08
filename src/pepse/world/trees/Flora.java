@@ -27,7 +27,8 @@ public class Flora {
             Random rand = new Random(Objects.hash(x, seed));
             if (rand.nextFloat() < probOfTree) {
                 trees.add(new Tree(x, groundHeight.apply((float) x), seed));
-
+                //TODO: decide if the space is fine
+                x += Block.SIZE * 2 * Tree.BRANCH_SIZE;
             }
         }
         return trees;
