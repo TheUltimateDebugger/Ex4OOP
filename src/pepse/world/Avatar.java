@@ -17,7 +17,7 @@ public class Avatar extends GameObject {
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener,
                   ImageReader imageReader) {
-        super(topLeftCorner, Vector2.ONES.mult(50),
+        super(topLeftCorner, new Vector2(Block.SIZE, 40),
                 new AnimationRenderable(new ImageRenderable[]{
                         imageReader.readImage("./assets/idle_0.png", true),
                         imageReader.readImage("./assets/idle_1.png", true),
