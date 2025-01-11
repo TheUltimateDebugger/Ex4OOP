@@ -1,11 +1,14 @@
 package pepse.world;
 
 import danogl.GameObject;
+import danogl.collisions.Collision;
 import danogl.gui.ImageReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.ImageRenderable;
 import danogl.util.Vector2;
+import pepse.util.CollisionHandler;
+
 import java.awt.event.KeyEvent;
 
 public class Avatar extends GameObject {
@@ -14,6 +17,7 @@ public class Avatar extends GameObject {
     private static final double STARTING_ENERGY = 100f, MOVE_COST = 0.5f,
             JUMP_COST = 10f, STATIC_GAIN = 1f;
     private double energy;
+    private CollisionHandler collisionHandler = null;
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener,
                   ImageReader imageReader) {
@@ -85,6 +89,22 @@ public class Avatar extends GameObject {
                 renderer().setRenderable(idleAnimation);
             }
             energy += STATIC_GAIN;
+        }
+    }
+
+    public void setCollisionHandler(CollisionHandler collisionHandler) {
+        this.collisionHandler = collisionHandler;
+    }
+
+    @Override
+    public void onCollisionEnter(GameObject other, Collision collision) {
+        super.onCollisionEnter(other, collision);
+        if (collisionHandler != null) {
+            try {
+                collisionHandler.handleCollision(other);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
