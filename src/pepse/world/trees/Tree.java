@@ -27,7 +27,7 @@ public class Tree {
 
     private List<Block> log;
     private List<Block> leafs;
-    private List<Block> fruits;
+    private List<Fruit> fruits;
 
     public Tree (float startLocationX, float startLocationY, int seed) {
         Random rand = new Random(Objects.hash(startLocationX, seed));
@@ -88,8 +88,8 @@ public class Tree {
         return leaf;
     }
 
-    private Block create_fruit(Vector2 pos, Renderable renderer_fruit) {
-        Block fruit = new Block(pos, renderer_fruit);
+    private Fruit create_fruit(Vector2 pos, Renderable renderer_fruit) {
+        Fruit fruit = new Fruit(pos, renderer_fruit);
         fruit.setTag("fruit");
         return fruit;
     }
@@ -102,7 +102,7 @@ public class Tree {
         return leafs;
     }
 
-    public List<Block> getFruits() {
+    public List<Fruit> getFruits() {
         return fruits;
     }
 }
