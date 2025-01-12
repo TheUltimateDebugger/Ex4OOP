@@ -111,7 +111,6 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
-        System.out.println(windowController.getWindowDimensions());
         // Set up avatar
         avatar = new Avatar(AVATAR_SIZE, inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
