@@ -88,7 +88,7 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // Initialize terrain and environment objects
-        int seed = 1;
+        int seed = 646;
         terrain = new Terrain(windowController.getWindowDimensions(), seed);
         GameObject night = Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
