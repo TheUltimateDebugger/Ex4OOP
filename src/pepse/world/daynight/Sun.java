@@ -1,5 +1,4 @@
 package pepse.world.daynight;
-
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
 import danogl.components.Transition;

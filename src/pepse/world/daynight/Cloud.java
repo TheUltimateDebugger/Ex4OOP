@@ -46,6 +46,9 @@ public class Cloud extends GameObject implements AvatarJumpListener {
         }
     }
 
+    /**
+     * execute the addRain function
+     */
     @Override
     public void onAvatarJump() {
         addRain.execute(this); // trigger rain effect when avatar jumps

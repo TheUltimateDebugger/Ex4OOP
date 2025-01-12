@@ -1,9 +1,4 @@
-/**
- * Manages the core game logic, including initialization, game objects, chunks, and day-night cycle.
- * @author idomi
- */
 package pepse;
-
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
@@ -29,7 +24,6 @@ import pepse.world.Terrain;
 import pepse.world.daynight.*;
 import pepse.world.trees.Flora;
 import pepse.world.trees.Tree;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -37,6 +31,10 @@ import static pepse.world.Avatar.MAX_ENERGY;
 import static pepse.world.daynight.Cloud.CLOUD_SIZE;
 
 
+/**
+ * Manages the core game logic, including initialization, game objects, chunks, and day-night cycle.
+ * @author idomi
+ */
 public class PepseGameManager extends GameManager {
     // The length of the day-night cycle in game time.
     private static final int CYCLE_LENGTH = 30;
