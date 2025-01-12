@@ -82,14 +82,14 @@ public class Avatar extends GameObject {
                 renderer().setIsFlippedHorizontally(false);
             }
             if (xVel != 0) {
-                if (transform().getVelocity().y() == 0)
-                renderer().setRenderable(runAnimation);
-                energy -= MOVE_COST;
-                moved = true;
+                if (transform().getVelocity().y() == 0) {
+                    renderer().setRenderable(runAnimation);
+                    energy -= MOVE_COST;
+                    moved = true;
+                }
             }
             transform().setVelocityX(xVel);
         }
-        // TODO fix glitch
         if(userInputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0
         && energy >= JUMP_COST) {
             renderer().setRenderable(jumpAnimation);
@@ -127,5 +127,4 @@ public class Avatar extends GameObject {
     public void changeEnergy(float energy) {
         this.energy += energy;
     }
-    // TODO implement jump listener
 }

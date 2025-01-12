@@ -81,8 +81,8 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
         GameObject sun_halo = SunHalo.create(sun);
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
-        Flora flora = new Flora(seed, 0.2f, terrain::groundHeightAt);
-        //        Flora flora = new Flora(seed, terrain::groundHeightAt);
+//        Flora flora = new Flora(seed, 0.2f, terrain::groundHeightAt);
+        Flora flora = new Flora(seed, terrain::groundHeightAt);
         List<Tree> trees = flora.createInRange(0, (int)windowController.getWindowDimensions().x());
         for (Tree t : trees) {
             addTree(t);
@@ -143,7 +143,7 @@ public class PepseGameManager extends GameManager {
             gameObjects().addGameObject(b, Layer.STATIC_OBJECTS);
         }
         for (Tree t : chunk.getTrees()) {
-            add_tree(t);
+            addTree(t);
         }
     }
 
