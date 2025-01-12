@@ -24,7 +24,7 @@ public class Avatar extends GameObject {
     private UserInputListener userInputListener;
     // movement constants
     private static final int GRAVITY = 800, VELOCITY_X =153, VELOCITY_Y = -600;
-    // energy constants
+    // the energy constants
     public static final double MAX_ENERGY = 100f;
     // energy constants
     public static final double MOVE_COST = 0.5f;
