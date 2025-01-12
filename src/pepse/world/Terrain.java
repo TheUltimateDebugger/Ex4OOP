@@ -19,7 +19,9 @@ public class Terrain {
     private final int groundHeightAtX0;
     // The noise generator used to create ground height variations
     private final NoiseGenerator ng;
-    // The factor representing the ground height fraction of the screen
+    /**
+     *  The factor representing the ground height fraction of the screen
+     */
     public static final float GROUND_HEIGHT = 2f/3f;
     // The depth of the terrain (how far the terrain extends vertically)
     private static final int TERRAIN_DEPTH = 20;
@@ -27,7 +29,9 @@ public class Terrain {
     private static final int NOISE_FACTOR = Block.SIZE * 7;
     // The base color of the ground
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
-    //the tag for the blocks
+    /**
+     * the tag for the blocks
+     */
     public static final String GROUND_TAG = "ground";
 
     /**

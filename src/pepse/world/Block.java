@@ -10,7 +10,9 @@ import danogl.util.Vector2;
  * @author Tomer Zilberman
  */
 public class Block extends GameObject {
-    // size of each block in the game
+    /**
+     * size of each block in the game
+     */
     public static final int SIZE = 30;
 
     /**
