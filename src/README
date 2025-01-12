@@ -8,6 +8,39 @@ Explanation regarding how we chose to implement the trees package:
 
 3. The design patterns we chose to utilize:
 
+Explanation regarding how we chose to implement the Tree functionality:
+1. The different classes we chose to define:
+- Flora: a class that generates the forest in a given space
+- Tree: a class that unites all the components of a single tree: log, leafs and fruits.
+2. The relations between the classes:
+- Flora has the function createInRange which returns a list of trees. this function generates the
+forrest itself.
+- Tree has lists of blocks that compose it;s structure.
+- the fruits (Block class) is appearing in the collision lambda of the avatar to delete them
+and then setting the task to regrow them. the way they are appearing is as the other object and we check
+their tag to make sure they are fruits.
+3.
+- Builder/Factory Pattern (in Flora class):
+The Flora class acts as a factory for creating trees, with its createInRange method producing trees based on
+ specified parameters It encapsulates the complex logic of tree creation and placement
+- Observer Pattern (in Avatar class):
+the Avatar class uses:
+jumpListeners list and addJumpListener method for jump events
+onEnergyUpdate consumer for energy updates
+Listeners get notified when specific events occur (jumping, energy changes)
+- Strategy Pattern (in Avatar class):
+The CollisionHandler interface and setCollisionHandler method allow for different collision handling
+ strategies This allows for flexible collision behavior that can be changed at runtime
+- Composite Pattern (in Tree class):
+The Tree class is composed of multiple components (log, leaves, fruits)
+Each component is made up of Block objects
+These components can be managed and accessed independently through getters
+The code demonstrates good use of these patterns to achieve:
+- Separation of concerns
+- Loose coupling between components
+- Flexibility in handling different behaviors
+- Maintainable and extensible code structure
+
 
 Explanation regarding how we chose to implement the Cloud functionality:
 1. The different classes we chose to define:
