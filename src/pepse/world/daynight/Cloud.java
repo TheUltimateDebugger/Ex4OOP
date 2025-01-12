@@ -11,9 +11,11 @@ import pepse.util.AvatarJumpListener;
  */
 public class Cloud extends GameObject implements AvatarJumpListener {
     private final int window_width; // the width of the game window, used to reset cloud position
-    private static final Vector2 VELOCITY =
-            new Vector2(20, 0); // constant velocity for cloud movement
+    public static final Vector2 VELOCITY =
+            new Vector2(20, 0), CLOUD_SIZE = new Vector2(100, 100); // constant velocity for cloud movement
     private final CloudAction addRain; // action to add rain when the avatar jumps
+    private final static float IMAGE_SIZE_FACTOR = 0.3f;
+    public final static String CLOUD_TAG = "cloud";
 
     /**
      * constructs a cloud object.
@@ -25,12 +27,12 @@ public class Cloud extends GameObject implements AvatarJumpListener {
     public Cloud(Vector2 topLeftCorner, ImageRenderable renderable,
                  int window_width, CloudAction addRain) {
         super(topLeftCorner,
-                new Vector2(renderable.width(), renderable.height()).mult(0.3f),
+                new Vector2(renderable.width(), renderable.height()).mult(IMAGE_SIZE_FACTOR),
                 renderable);
         this.window_width = window_width;
         this.addRain = addRain;
-        this.setTag("cloud"); // set a tag to identify this object as a cloud
-        setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES); // make the cloud move with the camera
+        this.setTag(CLOUD_TAG); // set a tag to identify this object as a cloud
+        setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
     }
 
     @Override

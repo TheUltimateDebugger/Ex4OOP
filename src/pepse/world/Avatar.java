@@ -21,8 +21,8 @@ import java.util.function.Consumer;
 
 public class Avatar extends GameObject {
     private UserInputListener userInputListener;
-    private static final int GRAVITY = 800, VELOCITY_X =400, VELOCITY_Y = -600;
-    private static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
+    private static final int GRAVITY = 800, VELOCITY_X =200, VELOCITY_Y = -600;
+    public static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
             JUMP_COST = 10f, STATIC_GAIN = 1f;
     private double energy;
     private CollisionHandler collisionHandler = null;
@@ -152,6 +152,10 @@ public class Avatar extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
+        if(other.getTag().equals("block")){
+            this.transform().setVelocityY(0);
+        }
+
         if (collisionHandler != null) {
             try {
                 collisionHandler.handleCollision(other);
