@@ -15,6 +15,8 @@ public class RainDrop extends GameObject {
     private static final int GRAVITY = 800; // downward acceleration
     private CollisionHandler collisionHandler = null;
     private final RainDropAction onHitGround;
+    private static final Vector2 DIMENSIONS = new Vector2(20, 30);
+    private static final String RAINDROP_TAG = "raindrop";
 
     /**
      * constructor for creating a raindrop object. 
@@ -23,11 +25,11 @@ public class RainDrop extends GameObject {
      * @param onHitGround - action to execute when the raindrop hits the ground. 
      */
     public RainDrop(Vector2 topLeftCorner, Renderable renderable, RainDropAction onHitGround) {
-        super(topLeftCorner, new Vector2(20, 30), renderable);
+        super(topLeftCorner, DIMENSIONS, renderable);
         this.onHitGround = onHitGround;
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         transform().setAccelerationY(GRAVITY);
-        setTag("raindrop");
+        setTag(RAINDROP_TAG);
     }
 
     /**

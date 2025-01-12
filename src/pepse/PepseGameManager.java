@@ -27,6 +27,9 @@ import pepse.world.trees.Tree;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static pepse.world.Avatar.MAX_ENERGY;
+import static pepse.world.daynight.Cloud.CLOUD_SIZE;
+
 
 /**
  * Manages the core game logic, including initialization, game objects, chunks, and day-night cycle.
@@ -37,7 +40,7 @@ public class PepseGameManager extends GameManager {
     private static final int CYCLE_LENGTH = 30;
     // The render distance in terms of chunks.
     //TODO render distance too small can create bug. make it bigger
-    private static final int RENDER_DISTANT = 3;
+    private static final int RENDER_DISTANT = 2;
     //fruit's energy to the player
     private static final int FRUIT_ENERGY = 10;
     private static final Vector2 AVATAR_SIZE = new Vector2(200, 200);
@@ -59,6 +62,14 @@ public class PepseGameManager extends GameManager {
     private ImageReader imageReader;
     //the camera object of the game
     private Camera camera;
+    // camera dimensions factor
+    private static final float CAMERA_FACTOR = 0.1f;
+    // paths
+    private static final String CLOUD_PATH = "./assets/cloud.jpg",
+            RAINDROP_PATH = "./assets/raindrop.jpg";
+    // energy HUD text
+    private static final String ENERGY_TEXT = "Energy: ";
+    private static final Vector2 ENERGY_DISPLAY_SIZE = new Vector2(200, 30);
 
     /**
      * Constructs the PepseGameManager.
@@ -88,8 +99,6 @@ public class PepseGameManager extends GameManager {
      */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener inputListener, WindowController windowController) {
-        //TODO split to smaller functions
-        //TODO a lot of "magic number", make constants
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         this.imageReader = imageReader;
         this.windowWidth = (int)Math.ceil(windowController.getWindowDimensions().x()/Block.SIZE)*Block.SIZE;
@@ -125,15 +134,15 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
         flora = new Flora(SEED, terrain::groundHeightAt);
         camera = new Camera(avatar,
-                windowController.getWindowDimensions().mult(0.1f).subtract(
+                windowController.getWindowDimensions().mult(CAMERA_FACTOR).subtract(
                         avatar.getTopLeftCorner()),
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions());
         setCamera(camera);
 
         // Create and add cloud object
-        ImageRenderable cloud_img = imageReader.readImage("./assets/cloud.jpg", true);
-        Cloud cloud = new Cloud(new Vector2(100, 100), cloud_img,
+        ImageRenderable cloud_img = imageReader.readImage(CLOUD_PATH, true);
+        Cloud cloud = new Cloud(CLOUD_SIZE, cloud_img,
                 (int) windowController.getWindowDimensions().x(), getAddRainRunnable());
         gameObjects().addGameObject(cloud, Layer.BACKGROUND);
         avatar.addJumpListener(cloud);
@@ -144,15 +153,15 @@ public class PepseGameManager extends GameManager {
         }
 
         // Set up energy display
-        energyDisplay = new TextRenderable("Energy: 100");
+        energyDisplay = new TextRenderable(ENERGY_TEXT + MAX_ENERGY);
         GameObject energyDisplayObject = new GameObject(
-                new Vector2(0, 0), // Top-left corner of the screen
-                new Vector2(200, 30), // Example size
+                Vector2.ZERO,
+                ENERGY_DISPLAY_SIZE,
                 energyDisplay
         );
         energyDisplayObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects().addGameObject(energyDisplayObject, Layer.UI);
-        avatar.setOnEnergyUpdate((energy) -> { energyDisplay.setString("Energy: " + energy); });
+        avatar.setOnEnergyUpdate((energy) -> { energyDisplay.setString(ENERGY_TEXT + energy); });
     }
 
     /**
@@ -269,13 +278,14 @@ public class PepseGameManager extends GameManager {
      */
     public CloudAction getAddRainRunnable() {
         //TODO magic numbers
+        final int RANGE = 40, MAX_DROPS = 4;
         return (cloud) -> {
-            int num = (int) (Math.random() * 4) + 1;
+            int num = (int) (Math.random() * MAX_DROPS) + 1;
             for (int i = 0; i < num; i++) {
                 RainDrop drop = new RainDrop(cloud.getVisualCenterInAbsoluteSpace(
                         camera.getTopLeftCorner()).subtract(new Vector2(
-                        (int) (Math.random() * 40 - 20), 40 * i)),
-                        imageReader.readImage("./assets/raindrop.jpg", true),
+                        (int) (Math.random() * RANGE - RANGE / 2), RANGE * i)),
+                        imageReader.readImage(RAINDROP_PATH, true),
                         rainDrop -> {
                             gameObjects().removeGameObject(rainDrop, Layer.DEFAULT);
                         });
