@@ -39,6 +39,7 @@ public class Avatar extends GameObject {
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener, ImageReader imageReader) {
         // call super
         super(topLeftCorner, new Vector2(Block.SIZE, 40),
+        //TODO: magic numbers
                 new AnimationRenderable(new ImageRenderable[]{
                         imageReader.readImage("./assets/idle_0.png", true),
                         imageReader.readImage("./assets/idle_1.png", true),

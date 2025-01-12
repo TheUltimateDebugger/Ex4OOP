@@ -6,5 +6,6 @@ package pepse.util;
  */
 @FunctionalInterface
 public interface AvatarJumpListener {
+    //TODO documentation
     void onAvatarJump();
 }

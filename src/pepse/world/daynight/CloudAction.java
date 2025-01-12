@@ -1,15 +1,14 @@
+package pepse.world.daynight;
+
 /**
  * interface for cloud actions.
  * @author idomi
  */
-package pepse.world.daynight;
-
 @FunctionalInterface
 public interface CloudAction {
     /**
      * execute some action on a cloud.
-     * @param - the cloud to do something with.
-     * @return - nothing.
+     * @param cloud  - the cloud to do something with.
      */
     void execute(Cloud cloud);
 }

@@ -35,21 +35,32 @@ import java.util.Deque;
 
 
 public class PepseGameManager extends GameManager {
-    /** The length of the day-night cycle in game time. */
+    // The length of the day-night cycle in game time.
     private static final int CYCLE_LENGTH = 30;
-    /** The render distance in terms of chunks. */
-    private static final int RENDER_DISTANT = 1;
-    /** A queue of chunks to manage rendering. */
+    // The render distance in terms of chunks.
+    //TODO render distance too small can create bug. make it bigger
+    private static final int RENDER_DISTANT = 3;
+    //fruit's energy to the player
+    private static final int FRUIT_ENERGY = 10;
+    private static final Vector2 AVATAR_SIZE = new Vector2(200, 200);
+    //the seed of the game
+    private static final int SEED = 1;
+    // A queue of chunks to manage rendering.
     private Deque<Chunk> chunks;
-    /** The width of the window. */
+    // The width of the window.
     private int windowWidth;
-    /** The display for energy information. */
+    // The display for energy information.
     private TextRenderable energyDisplay;
-    /** The terrain object representing the world’s ground. */
+    // The terrain object representing the world’s ground.
     private Terrain terrain;
-    /** The flora object representing trees and plant life. */
+    // The flora object representing trees and plant life.
     private Flora flora;
+    //the avatar of the game
     private Avatar avatar;
+    //the image reader used to read images
+    private ImageReader imageReader;
+    //the camera object of the game
+    private Camera camera;
 
     /**
      * Constructs the PepseGameManager.
@@ -59,8 +70,7 @@ public class PepseGameManager extends GameManager {
         windowWidth = 0;
     }
 
-    private ImageReader imageReader;
-    private Camera camera;
+
 
     /**
      * Starts the game by initializing the necessary components.
@@ -80,6 +90,8 @@ public class PepseGameManager extends GameManager {
      */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener inputListener, WindowController windowController) {
+        //TODO split to smaller functions
+        //TODO a lot of "magic number", make constants
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         this.imageReader = imageReader;
         this.windowWidth = (int)Math.ceil(windowController.getWindowDimensions().x()/Block.SIZE)*Block.SIZE;
@@ -88,20 +100,19 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // Initialize terrain and environment objects
-        int seed = 646;
-        terrain = new Terrain(windowController.getWindowDimensions(), seed);
+        terrain = new Terrain(windowController.getWindowDimensions(), SEED);
         GameObject night = Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
 
         // Set up avatar
-        avatar = new Avatar(new Vector2(200, 200), inputListener, imageReader);
+        avatar = new Avatar(AVATAR_SIZE, inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
-            if (other.getTag().equals("fruit")) {
-                Vector2 pos = other.getTopLeftCorner();
+            if (other.getTag().equals(Tree.FRUIT_TAG)) {
                 gameObjects().removeGameObject(other, Layer.STATIC_OBJECTS);
-                avatar.changeEnergy(10);
+                avatar.changeEnergy(FRUIT_ENERGY);
+                // function to create an apple if still in render distance
                 new ScheduledTask(avatar, CYCLE_LENGTH, false, () -> {
                     if (other.getCenter().x() > chunks.peekFirst().getMinX() &&
                             other.getCenter().x() < chunks.peekLast().getMaxX())
@@ -114,7 +125,7 @@ public class PepseGameManager extends GameManager {
         // Set up sun halo and camera
         GameObject sun_halo = SunHalo.create(sun);
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
-        flora = new Flora(seed, terrain::groundHeightAt);
+        flora = new Flora(SEED, terrain::groundHeightAt);
         camera = new Camera(avatar,
                 windowController.getWindowDimensions().mult(0.1f).subtract(
                         avatar.getTopLeftCorner()),
@@ -146,20 +157,27 @@ public class PepseGameManager extends GameManager {
         avatar.setOnEnergyUpdate((energy) -> { energyDisplay.setString("Energy: " + energy); });
     }
 
+    /**
+     * updates the game (mainly the chunks)
+     * @param deltaTime The time, in seconds, that passed since the last invocation
+     *                  of this method (i.e., since the last frame). This is useful
+     *                  for either accumulating the total time that passed since some
+     *                  event, or for physics integration (i.e., multiply this by
+     *                  the acceleration to get an estimate of the added velocity or
+     *                  by the velocity to get an estimate of the difference in position).
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        //too left
+        //too close to the left
         if (avatar.getCenter().x() - chunks.peekFirst().getMinX() < windowWidth * (RENDER_DISTANT-1)) {
-            System.out.println("remove1: " + chunks.peekLast().getMinX() + " add: " + chunks.peekFirst().getMinX());
             add_chunk(new Chunk(chunks.peekFirst().getMinX() - windowWidth,
                     chunks.peekFirst().getMaxX() - windowWidth, terrain, flora));
             remove_chunk(false);
 
         }
-        //too right
+        //too close to the right
         else if (chunks.peekLast().getMaxX() - avatar.getCenter().x() < windowWidth * (RENDER_DISTANT-1)) {
-            System.out.println("remove2: " + chunks.peekFirst().getMinX() + " add: "+ chunks.peekLast().getMinX());
             remove_chunk(true);
             add_chunk(new Chunk(chunks.peekLast().getMinX() + windowWidth,
                     chunks.peekLast().getMaxX() + windowWidth, terrain, flora));
@@ -252,6 +270,7 @@ public class PepseGameManager extends GameManager {
      * @return - the action to generate rain.
      */
     public CloudAction getAddRainRunnable() {
+        //TODO magic numbers
         return (cloud) -> {
             int num = (int) (Math.random() * 4) + 1;
             for (int i = 0; i < num; i++) {

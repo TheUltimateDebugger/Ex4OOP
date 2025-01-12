@@ -1,15 +1,14 @@
-/**
- * class representing the sun's halo in the game world.
- * @author idomi
- */
 package pepse.world.daynight;
 
 import danogl.GameObject;
 import danogl.gui.rendering.OvalRenderable;
-import danogl.util.Vector2;
 
 import java.awt.*;
 
+/**
+ * class representing the sun's halo in the game world.
+ * @author Tomer Zilberman
+ */
 public class SunHalo {
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20); // light yellow with transparency
     public static final float SIZE_FACTOR = 1.5f; // size of the halo relative to the sun's size

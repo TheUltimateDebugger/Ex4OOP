@@ -1,7 +1,3 @@
-/**
- * class representing a raindrop object in the game. 
- * @author idomi
- */
 package pepse.world.daynight;
 
 import danogl.GameObject;
@@ -10,7 +6,12 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.CollisionHandler;
 
+/**
+ * class representing a raindrop object in the game.
+ * @author idomi
+ */
 public class RainDrop extends GameObject {
+    //TODO do we need the same constant twice?
     private static final int GRAVITY = 800; // downward acceleration
     private CollisionHandler collisionHandler = null;
     private final RainDropAction onHitGround;

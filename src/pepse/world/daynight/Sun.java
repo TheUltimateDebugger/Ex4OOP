@@ -1,7 +1,3 @@
-/**
- * class representing the sun in the game world.
- * @author idomi
- */
 package pepse.world.daynight;
 
 import danogl.GameObject;
@@ -13,9 +9,16 @@ import pepse.world.Terrain;
 
 import java.awt.*;
 
+/**
+ * class representing the sun in the game world.
+ * @author idomi
+ */
 public class Sun {
 
     private static final float SIZE = 100;
+    private static final float INITIAL_ANGLE = 0f;
+    private static final float FINAL_ANGLE = 360f;
+    public static final String SUN_TAG = "sun";
 
     /**
      * creates the sun object and sets up its movement and visual properties.
@@ -30,15 +33,15 @@ public class Sun {
                 new Vector2(SIZE, SIZE),
                 new OvalRenderable(Color.YELLOW)); // make it yellow, obviously
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        sun.setTag("sun");
+        sun.setTag(SUN_TAG);
         Vector2 cycleCenter = new Vector2(windowDimensions.x()/2,
                 windowDimensions.y()*Terrain.GROUND_HEIGHT);
-        new Transition<Float>(sun,
+        new Transition<>(sun,
                 (Float angle) -> sun.setCenter
                         (initialSunCenter.subtract(cycleCenter)
                                 .rotated(angle)
                                 .add(cycleCenter)),
-                0f, 360f,
+                INITIAL_ANGLE, FINAL_ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
                 Transition.TransitionType.TRANSITION_LOOP, null); // loop around the cycle
         return sun; // return the sun object

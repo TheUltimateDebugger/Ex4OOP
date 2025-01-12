@@ -11,13 +11,13 @@ import pepse.world.trees.Tree;
 import java.util.List;
 
 public class Chunk {
-    /** the minimum x-coordinate of the chunk */
+    // the minimum x-coordinate of the chunk
     private int minX;
-    /** the maximum x-coordinate of the chunk */
+    // the maximum x-coordinate of the chunk
     private int maxX;
-    /** the list of terrain blocks in the chunk */
+    // the list of terrain blocks in the chunk
     private List<Block> terrain;
-    /** the list of trees in the chunk */
+    // the list of trees in the chunk
     private List<Tree> trees;
 
     /**

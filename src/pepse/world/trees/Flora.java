@@ -3,10 +3,7 @@
  * @author idomi
  */
 package pepse.world.trees;
-
-import pepse.util.NoiseGenerator;
 import pepse.world.Block;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +11,13 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class Flora {
-    private static final float PROB_OF_TREE = 0.2f; // probability of creating a tree
-    private static final int SKIP_AFTER_TREE = Block.SIZE * 2 * Tree.BRANCH_SIZE; // how far to skip after placing a tree
-    private int seed;
+    //the probability for a tree to be created (if it won't intersect other trees)
+    private static final float PROB_OF_TREE = 0.2f;
+    //how far to skip after placing a tree
+    private static final int SKIP_AFTER_TREE = Block.SIZE * 2 * Tree.BRANCH_SIZE;
+    //the seed of the game, Flora will adjust it based on location
+    private final int seed;
+    //the function to calculate the height in a given point
     private final Function<Float, Float> groundHeight;
 
     /**
@@ -37,11 +38,14 @@ public class Flora {
      */
     public List<Tree> createInRange(int minX, int maxX) {
         List<Tree> trees = new ArrayList<>();
-        Random rand = new Random(Objects.hash(minX, seed)); // create a random number generator based on seed and minX
+        // create a random number generator based on seed and minX
+        Random rand = new Random(Objects.hash(minX, seed));
         for (int x = minX + SKIP_AFTER_TREE; x < maxX; x+=Block.SIZE) {
-            if (rand.nextFloat() < PROB_OF_TREE) { // if the random number is less than the probability, create a tree
-                trees.add(new Tree(x, groundHeight.apply((float) x), seed)); // add a new tree at this x position
-                x += SKIP_AFTER_TREE; // skip ahead after placing a tree
+            if (rand.nextFloat() < PROB_OF_TREE) {
+                // add a new tree at this x position
+                trees.add(new Tree(x, groundHeight.apply((float) x), seed));
+                // skip ahead after placing a tree
+                x += SKIP_AFTER_TREE;
             }
         }
         return trees; // return the list of created trees

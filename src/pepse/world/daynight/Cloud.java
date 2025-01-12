@@ -1,7 +1,6 @@
 package pepse.world.daynight;
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
-import danogl.gui.rendering.Camera;
 import danogl.gui.rendering.ImageRenderable;
 import danogl.util.Vector2;
 import pepse.util.AvatarJumpListener;

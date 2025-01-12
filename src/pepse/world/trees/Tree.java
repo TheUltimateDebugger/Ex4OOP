@@ -1,7 +1,3 @@
-/**
- * class representing a tree with a log, leaves, and fruits.
- * @author idomi
- */
 package pepse.world.trees;
 
 import danogl.components.ScheduledTask;
@@ -19,6 +15,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * class representing a tree with a log, leaves, and fruits.
+ * @author Tomer Zilbeman
+ */
 public class Tree {
     private static final Color LOG_COLOR = new Color(100, 50, 20); // color of the tree's log
     private static final Color LEAFS_COLOR = new Color(50, 200, 30); // color of the tree's leaves
@@ -26,7 +26,20 @@ public class Tree {
     private static final int MAXIMUM_LOG_GROWTH = 2; // maximum additional growth for the log
     public static final int BRANCH_SIZE = 2; // branch size (how wide the tree branches out)
     private static final float LEAF_PROB = 0.8f; // probability of a leaf at a given position
-    private static final float FRUIT_PROB = 0.2f; // probability of fruit on a branch
+    // probability of fruit on a branch if there are no leafs there
+    private static final float FRUIT_PROB = 0.2f;
+    //tags
+    public static final String LOG_TAG = "tree";
+    public static final String LEAF_TAG = "leaf";
+    public static final String FRUIT_TAG = "fruit";
+
+    private static final float INITIAL_LEAF_ANGLE = 0f;
+    private static final float FINAL_LEAF_ANGLE = 30f;
+    private static final float LEAF_TRANSITION_TIME = 2f;
+    private static final float LEAF_INITIAL_SIZE_FACTOR = 1f;
+    private static final float LEAF_FINAL_SIZE_FACTOR = 0.5f;
+
+
 
     private List<Block> log;
     private List<Block> leafs;
@@ -57,7 +70,7 @@ public class Tree {
         for (int i = 0; i < logHeight; i++) {
             this.log.add(new Block(new Vector2(startLocationX, startLocationY - (i+1) * Block.SIZE),
                     renderer_log));
-            this.log.get(this.log.size()-1).setTag("log");
+            this.log.get(this.log.size()-1).setTag(LOG_TAG);
         }
     }
 
@@ -96,17 +109,17 @@ public class Tree {
      */
     private Block create_leaf(Vector2 pos, Renderable renderer_leaf, Random rand) {
         Block leaf = new Block(pos, renderer_leaf);
-        leaf.setTag("leaf");
+        leaf.setTag(LEAF_TAG);
         //TODO: decide on good parameters to this
-        Runnable supply_size = () -> new Transition<Float>(leaf,
+        Runnable supply_angle = () -> new Transition<>(leaf,
                 (Float a) -> leaf.renderer().setRenderableAngle(a),
-                0f, 30f, Transition.LINEAR_INTERPOLATOR_FLOAT,
-                2, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
-        Runnable supply_angle = () ->new Transition<Float>(leaf,
+                INITIAL_LEAF_ANGLE, FINAL_LEAF_ANGLE, Transition.LINEAR_INTERPOLATOR_FLOAT,
+                LEAF_TRANSITION_TIME, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+        Runnable supply_size = () ->new Transition<>(leaf,
                 (Float a) -> leaf.setDimensions(
                         new Vector2(Block.SIZE * a, Block.SIZE)),
-                1f, 0.5f, Transition.LINEAR_INTERPOLATOR_FLOAT,
-                2, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                LEAF_INITIAL_SIZE_FACTOR, LEAF_FINAL_SIZE_FACTOR, Transition.LINEAR_INTERPOLATOR_FLOAT,
+                LEAF_TRANSITION_TIME, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
         float delay1 = rand.nextFloat();
         float delay2 = rand.nextFloat();
         new ScheduledTask(leaf, delay1, false, supply_size);
@@ -122,7 +135,7 @@ public class Tree {
      */
     private Block create_fruit(Vector2 pos, Renderable renderer_fruit) {
         Block fruit = new Block(pos, renderer_fruit);
-        fruit.setTag("fruit");
+        fruit.setTag(FRUIT_TAG);
         return fruit;
     }
 
