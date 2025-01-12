@@ -7,6 +7,5 @@ import danogl.GameObject;
  * @author idomi
  */
 public interface CollisionHandler {
-    //TODO documentation
     void handleCollision(GameObject other) throws InterruptedException;
 }

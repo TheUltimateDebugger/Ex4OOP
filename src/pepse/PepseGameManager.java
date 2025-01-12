@@ -39,8 +39,7 @@ public class PepseGameManager extends GameManager {
     // The length of the day-night cycle in game time.
     private static final int CYCLE_LENGTH = 30;
     // The render distance in terms of chunks.
-    //TODO render distance too small can create bug. make it bigger
-    private static final int RENDER_DISTANT = 2;
+    private static final int RENDER_DISTANT = 3;
     //fruit's energy to the player
     private static final int FRUIT_ENERGY = 10;
     private static final Vector2 AVATAR_SIZE = new Vector2(200, 200);
@@ -112,7 +111,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
-
+        System.out.println(windowController.getWindowDimensions());
         // Set up avatar
         avatar = new Avatar(AVATAR_SIZE, inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
@@ -277,7 +276,6 @@ public class PepseGameManager extends GameManager {
      * @return - the action to generate rain.
      */
     public CloudAction getAddRainRunnable() {
-        //TODO magic numbers
         final int RANGE = 40, MAX_DROPS = 4;
         return (cloud) -> {
             int num = (int) (Math.random() * MAX_DROPS) + 1;

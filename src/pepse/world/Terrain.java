@@ -8,6 +8,7 @@ import pepse.util.NoiseGenerator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Class representing the terrain of the game world, including the ground and noise-based variations.

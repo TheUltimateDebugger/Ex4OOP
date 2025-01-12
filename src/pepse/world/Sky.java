@@ -11,7 +11,7 @@ import java.awt.*;
  * @author Tomer Zilberman
  */
 public class Sky {
-    // The basic color of the sky
+    //The basic color of the sky
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
     //the sky tag
     private static final String SKY_TAG = "sky";

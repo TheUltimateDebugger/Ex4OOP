@@ -43,7 +43,7 @@ public class Sun {
                                 .add(cycleCenter)),
                 INITIAL_ANGLE, FINAL_ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
-                Transition.TransitionType.TRANSITION_LOOP, null); // loop around the cycle
+                Transition.TransitionType.TRANSITION_LOOP, null);
         return sun; // return the sun object
     }
 }

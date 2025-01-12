@@ -20,14 +20,21 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Avatar extends GameObject {
+    // inputListener property
     private UserInputListener userInputListener;
-    private static final int GRAVITY = 800, VELOCITY_X =200, VELOCITY_Y = -600;
+    // constants
+    private static final int GRAVITY = 800, VELOCITY_X =153, VELOCITY_Y = -600;
     public static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
             JUMP_COST = 10f, STATIC_GAIN = 1f;
+    // energy property
     private double energy;
+    // handler to become lambda
     private CollisionHandler collisionHandler = null;
+    // anmiations
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
+    // list of listeners
     private List<AvatarJumpListener> jumpListeners = new ArrayList<>();
+    // lambda
     private Consumer<Double> onEnergyUpdate;
 
     /**
@@ -39,7 +46,6 @@ public class Avatar extends GameObject {
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener, ImageReader imageReader) {
         // call super
         super(topLeftCorner, new Vector2(Block.SIZE, 40),
-        //TODO: magic numbers
                 new AnimationRenderable(new ImageRenderable[]{
                         imageReader.readImage("./assets/idle_0.png", true),
                         imageReader.readImage("./assets/idle_1.png", true),

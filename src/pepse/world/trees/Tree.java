@@ -20,8 +20,10 @@ import java.util.Random;
  * @author Tomer Zilbeman
  */
 public class Tree {
-    private static final Color LOG_COLOR = new Color(100, 50, 20); // color of the tree's log
-    private static final Color LEAFS_COLOR = new Color(50, 200, 30); // color of the tree's leaves
+    private static final Color LOG_COLOR = new Color(100, 50, 20); // color of the tree's
+    // log
+    private static final Color LEAFS_COLOR = new Color(50, 200, 30); // color of the tree's
+    // leaves
     private static final int MINIMUM_LOG_HEIGHT = 5; // minimum height of the log
     private static final int MAXIMUM_LOG_GROWTH = 2; // maximum additional growth for the log
     public static final int BRANCH_SIZE = 2; // branch size (how wide the tree branches out)
@@ -88,13 +90,15 @@ public class Tree {
                             approximateColor(LEAFS_COLOR));
 
                     leafs.add(create_leaf(new Vector2(log.get(log.size() - 1).getTopLeftCorner()
-                            .add(new Vector2(x * Block.SIZE, y * Block.SIZE))), renderer_leaf, rand));
+                            .add(new Vector2(x * Block.SIZE,
+                                    y * Block.SIZE))), renderer_leaf, rand));
                 }
                 else if (x != 0 && rand.nextFloat() < FRUIT_PROB) { // create a fruit
                     Renderable renderer_fruit = new OvalRenderable(ColorSupplier.
                             approximateColor(Color.RED));
                     fruits.add(create_fruit(new Vector2(log.get(log.size() - 1).getTopLeftCorner()
-                            .add(new Vector2(x * Block.SIZE, y * Block.SIZE))), renderer_fruit));
+                            .add(new Vector2(x * Block.SIZE,
+                                    y * Block.SIZE))), renderer_fruit));
                 }
             }
         }
@@ -113,12 +117,15 @@ public class Tree {
         Runnable supply_angle = () -> new Transition<>(leaf,
                 (Float a) -> leaf.renderer().setRenderableAngle(a),
                 INITIAL_LEAF_ANGLE, FINAL_LEAF_ANGLE, Transition.LINEAR_INTERPOLATOR_FLOAT,
-                LEAF_TRANSITION_TIME, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                LEAF_TRANSITION_TIME,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
         Runnable supply_size = () ->new Transition<>(leaf,
                 (Float a) -> leaf.setDimensions(
                         new Vector2(Block.SIZE * a, Block.SIZE)),
-                LEAF_INITIAL_SIZE_FACTOR, LEAF_FINAL_SIZE_FACTOR, Transition.LINEAR_INTERPOLATOR_FLOAT,
-                LEAF_TRANSITION_TIME, Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+                LEAF_INITIAL_SIZE_FACTOR, LEAF_FINAL_SIZE_FACTOR,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                LEAF_TRANSITION_TIME,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
         float delay1 = rand.nextFloat();
         float delay2 = rand.nextFloat();
         new ScheduledTask(leaf, delay1, false, supply_size);

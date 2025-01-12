@@ -11,12 +11,10 @@ import pepse.util.CollisionHandler;
  * @author idomi
  */
 public class RainDrop extends GameObject {
-    //TODO do we need the same constant twice?
     private static final int GRAVITY = 800; // downward acceleration
-    private CollisionHandler collisionHandler = null;
-    private final RainDropAction onHitGround;
-    private static final Vector2 DIMENSIONS = new Vector2(20, 30);
-    private static final String RAINDROP_TAG = "raindrop";
+    private final RainDropAction onHitGround; // lambda to call when hitting ground
+    private static final Vector2 DIMENSIONS = new Vector2(20, 30); // size
+    private static final String RAINDROP_TAG = "raindrop"; // tag for objects
 
     /**
      * constructor for creating a raindrop object. 
