@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 public class Avatar extends GameObject {
     private UserInputListener userInputListener;
-    private static final int GRAVITY = 800, VELOCITY_X =200, VELOCITY_Y = -600;
+    private static final int GRAVITY = 800, VELOCITY_X =153, VELOCITY_Y = -600;
     public static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
             JUMP_COST = 10f, STATIC_GAIN = 1f;
     private double energy;
