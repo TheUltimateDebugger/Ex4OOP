@@ -1,3 +1,7 @@
+/**
+ * Manages the core game logic, including initialization, game objects, chunks, and day-night cycle.
+ * @author idomi
+ */
 package pepse;
 
 import danogl.GameManager;
@@ -32,17 +36,25 @@ import java.util.Deque;
 import java.awt.*;
 import java.util.List;
 
-
 public class PepseGameManager extends GameManager {
-    //TODO must be 30
+    /** The length of the day-night cycle in game time. */
     private static final int CYCLE_LENGTH = 30;
+    /** The render distance in terms of chunks. */
     private static final int RENDER_DISTANT = 3;
+    /** A queue of chunks to manage rendering. */
     private Deque<Chunk> chunks;
+    /** The width of the window. */
     private int windowWidth;
+    /** The display for energy information. */
     private TextRenderable energyDisplay;
+    /** The terrain object representing the world’s ground. */
     private Terrain terrain;
+    /** The flora object representing trees and plant life. */
     private Flora flora;
 
+    /**
+     * Constructs the PepseGameManager.
+     */
     public PepseGameManager() {
         chunks = new ArrayDeque<>();
         windowWidth = 0;
@@ -51,26 +63,40 @@ public class PepseGameManager extends GameManager {
     private ImageReader imageReader;
     private Camera camera;
 
+    /**
+     * Starts the game by initializing the necessary components.
+     * @param args - command line arguments (not used).
+     */
     public static void main(String[] args) {
         new PepseGameManager().run();
     }
 
-
-
+    /**
+     * Initializes the game, sets up the environment, and creates game objects.
+     * @param imageReader - used to read images for game objects.
+     * @param soundReader - used to read sound files (not currently used).
+     * @param inputListener - used to listen to user inputs (keyboard).
+     * @param windowController - provides the window dimensions.
+     */
     @Override
-    public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener
-            inputListener, WindowController windowController) {
+    public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener inputListener, WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         this.imageReader = imageReader;
         this.windowWidth = (int)Math.ceil(windowController.getWindowDimensions().x()/Block.SIZE)*Block.SIZE;
+
+        // Set up background and environment objects
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
+
+        // Initialize terrain and environment objects
         int seed = 2;
         terrain = new Terrain(windowController.getWindowDimensions(), seed);
         GameObject night = Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
+
+        // Set up avatar
         Avatar avatar = new Avatar(new Vector2(200, 200), inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
             if (other.getTag().equals("fruit")) {
@@ -83,6 +109,8 @@ public class PepseGameManager extends GameManager {
             }
         });
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
+
+        // Set up sun halo and camera
         GameObject sun_halo = SunHalo.create(sun);
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
         flora = new Flora(seed, terrain::groundHeightAt);
@@ -92,17 +120,20 @@ public class PepseGameManager extends GameManager {
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions());
         setCamera(camera);
+
+        // Create and add cloud object
         ImageRenderable cloud_img = imageReader.readImage("./assets/cloud.jpg", true);
         Cloud cloud = new Cloud(new Vector2(100, 100), cloud_img,
                 (int) windowController.getWindowDimensions().x(), getAddRainRunnable());
         gameObjects().addGameObject(cloud, Layer.BACKGROUND);
         avatar.addJumpListener(cloud);
 
+        // Add terrain chunks to the game world
         for (int i = -RENDER_DISTANT; i <= RENDER_DISTANT; i++) {
-            add_chunk(new Chunk(i*windowWidth, (i+1)*windowWidth, terrain, flora));
+            add_chunk(new Chunk(i * windowWidth, (i + 1) * windowWidth, terrain, flora));
         }
 
-
+        // Set up energy display
         energyDisplay = new TextRenderable("Energy: 100");
         GameObject energyDisplayObject = new GameObject(
                 new Vector2(0, 0), // Top-left corner of the screen
@@ -111,15 +142,22 @@ public class PepseGameManager extends GameManager {
         );
         energyDisplayObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects().addGameObject(energyDisplayObject, Layer.UI);
-        avatar.setOnEnergyUpdate((energy) -> {energyDisplay.setString("Energy: " + energy);});
+        avatar.setOnEnergyUpdate((energy) -> { energyDisplay.setString("Energy: " + energy); });
     }
 
+    /**
+     * Updates the energy display.
+     * @param energy - the current energy level.
+     */
     public void updateEnergyDisplay(int energy) {
     }
 
+    /**
+     * Adds a tree to the game world.
+     * @param tree - the tree to add.
+     */
     private void addTree(Tree tree) {
-        for (Block log : tree.getLog())
-        {
+        for (Block log : tree.getLog()) {
             gameObjects().addGameObject(log, Layer.STATIC_OBJECTS);
         }
         for (Block b : tree.getLeafs()) {
@@ -130,9 +168,12 @@ public class PepseGameManager extends GameManager {
         }
     }
 
+    /**
+     * Removes a tree from the game world.
+     * @param tree - the tree to remove.
+     */
     private void remove_tree(Tree tree) {
-        for (Block log : tree.getLog())
-        {
+        for (Block log : tree.getLog()) {
             gameObjects().removeGameObject(log, Layer.STATIC_OBJECTS);
         }
         for (Block b : tree.getLeafs()) {
@@ -143,6 +184,10 @@ public class PepseGameManager extends GameManager {
         }
     }
 
+    /**
+     * Adds a chunk to the game world.
+     * @param chunk - the chunk to add.
+     */
     private void add_chunk(Chunk chunk) {
         if (chunks.isEmpty()) {
             chunks.add(chunk);
@@ -161,6 +206,10 @@ public class PepseGameManager extends GameManager {
         }
     }
 
+    /**
+     * Removes a chunk from the game world.
+     * @param remove_first - true to remove the first chunk, false to remove the last.
+     */
     private void remove_chunk(boolean remove_first) {
         Chunk chunkToRemove;
         if (remove_first) {
@@ -177,13 +226,17 @@ public class PepseGameManager extends GameManager {
         }
     }
 
+    /**
+     * Provides a runnable action to create rain when invoked.
+     * @return - the action to generate rain.
+     */
     public CloudAction getAddRainRunnable() {
         return (cloud) -> {
             int num = (int) (Math.random() * 4) + 1;
             for (int i = 0; i < num; i++) {
                 RainDrop drop = new RainDrop(cloud.getVisualCenterInAbsoluteSpace(
                         camera.getTopLeftCorner()).subtract(new Vector2(
-                                (int) (Math.random() * 40 - 20), 40 * i)),
+                        (int) (Math.random() * 40 - 20), 40 * i)),
                         imageReader.readImage("./assets/raindrop.jpg", true),
                         rainDrop -> {
                             gameObjects().removeGameObject(rainDrop, Layer.DEFAULT);

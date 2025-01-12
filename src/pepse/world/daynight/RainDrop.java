@@ -1,3 +1,7 @@
+/**
+ * class representing a raindrop object in the game. 
+ * @author idomi
+ */
 package pepse.world.daynight;
 
 import danogl.GameObject;
@@ -6,12 +10,17 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.CollisionHandler;
 
-
 public class RainDrop extends GameObject {
-    private static final int GRAVITY = 800; // Downward acceleration
+    private static final int GRAVITY = 800; // downward acceleration
     private CollisionHandler collisionHandler = null;
     private final RainDropAction onHitGround;
 
+    /**
+     * constructor for creating a raindrop object. 
+     * @param topLeftCorner - the starting position of the raindrop. 
+     * @param renderable - the visual representation of the raindrop. 
+     * @param onHitGround - action to execute when the raindrop hits the ground. 
+     */
     public RainDrop(Vector2 topLeftCorner, Renderable renderable, RainDropAction onHitGround) {
         super(topLeftCorner, new Vector2(20, 30), renderable);
         this.onHitGround = onHitGround;
@@ -20,14 +29,23 @@ public class RainDrop extends GameObject {
         setTag("raindrop");
     }
 
+    /**
+     * called when the raindrop collides with something. 
+     * @param other - the object that the raindrop collided with. 
+     * @param collision - the collision details. 
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
         if (onHitGround != null) {
-            onHitGround.execute(this);
+            onHitGround.execute(this); // execute action when hitting the ground
         }
     }
 
+    /**
+     * updates the raindrop. 
+     * @param deltaTime - time since last update. 
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);

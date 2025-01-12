@@ -7,18 +7,21 @@ import danogl.util.Vector2;
 import pepse.util.AvatarJumpListener;
 
 /**
- * Represents a cloud that moves across the screen.
+ * represents a cloud that moves across the screen.
  * @author idomi
  */
 public class Cloud extends GameObject implements AvatarJumpListener {
-    private final int window_width;
+    private final int window_width; // the width of the game window, used to reset cloud position
     private static final Vector2 VELOCITY =
-            new Vector2(20, 0);
-    private final CloudAction addRain;
+            new Vector2(20, 0); // constant velocity for cloud movement
+    private final CloudAction addRain; // action to add rain when the avatar jumps
+
     /**
-     * Constructs a cloud object.
-     * @param topLeftCorner - The initial position of the cloud.
-     * @param renderable - The visual representation of the cloud.
+     * constructs a cloud object.
+     * @param topLeftCorner - the initial position of the cloud.
+     * @param renderable - the visual representation of the cloud.
+     * @param window_width - the width of the game window.
+     * @param addRain - the action to execute for rain creation.
      */
     public Cloud(Vector2 topLeftCorner, ImageRenderable renderable,
                  int window_width, CloudAction addRain) {
@@ -27,8 +30,8 @@ public class Cloud extends GameObject implements AvatarJumpListener {
                 renderable);
         this.window_width = window_width;
         this.addRain = addRain;
-        this.setTag("cloud");
-        setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        this.setTag("cloud"); // set a tag to identify this object as a cloud
+        setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES); // make the cloud move with the camera
     }
 
     @Override
@@ -44,9 +47,14 @@ public class Cloud extends GameObject implements AvatarJumpListener {
 
     @Override
     public void onAvatarJump() {
-        addRain.execute(this);
+        addRain.execute(this); // trigger rain effect when avatar jumps
     }
 
+    /**
+     * calculates the visual center of the cloud in absolute coordinates.
+     * @param cameraTopLeft - the top-left corner of the camera.
+     * @return the visual center of the cloud.
+     */
     public Vector2 getVisualCenterInAbsoluteSpace(Vector2 cameraTopLeft) {
         return cameraTopLeft.add(this.getTopLeftCorner()).add(this.getDimensions().mult(0.5f));
     }

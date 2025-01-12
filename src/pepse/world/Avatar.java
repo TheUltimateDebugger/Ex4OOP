@@ -1,3 +1,7 @@
+/**
+ * class representing the avatar character in the game with physics, animation, and energy management.
+ * @author idomi
+ */
 package pepse.world;
 
 import danogl.GameObject;
@@ -26,7 +30,12 @@ public class Avatar extends GameObject {
     private List<AvatarJumpListener> jumpListeners = new ArrayList<>();
     private Consumer<Double> onEnergyUpdate;
 
-
+    /**
+     * constructor for creating an avatar with specified position, input listener, and image reader.
+     * @param topLeftCorner - the position of the avatar's top left corner.
+     * @param inputListener - listener for user input.
+     * @param imageReader - image reader for loading avatar animations.
+     */
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener, ImageReader imageReader) {
         // call super
         super(topLeftCorner, new Vector2(Block.SIZE, 40),
@@ -63,17 +72,25 @@ public class Avatar extends GameObject {
     }
 
     /**
-     * adds a listener for jump events.
+     * adds a listener to be notified when the avatar jumps.
      * @param listener - the listener to add.
      */
     public void addJumpListener(AvatarJumpListener listener) {
         jumpListeners.add(listener);
     }
 
+    /**
+     * sets a consumer to be notified whenever the avatar's energy is updated.
+     * @param onEnergyUpdate - the consumer to call when energy is updated.
+     */
     public void setOnEnergyUpdate(Consumer<Double> onEnergyUpdate) {
         this.onEnergyUpdate = onEnergyUpdate;
     }
 
+    /**
+     * updates the avatar's state, including movement, animation, and energy usage.
+     * @param deltaTime - the time difference between frames.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -98,7 +115,7 @@ public class Avatar extends GameObject {
             transform().setVelocityX(xVel);
         }
         if(userInputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0
-        && energy >= JUMP_COST) {
+                && energy >= JUMP_COST) {
             renderer().setRenderable(jumpAnimation);
             transform().setVelocityY(VELOCITY_Y);
             energy -= JUMP_COST;
@@ -118,10 +135,19 @@ public class Avatar extends GameObject {
         onEnergyUpdate.accept(energy);
     }
 
+    /**
+     * sets the collision handler for the avatar.
+     * @param collisionHandler - the collision handler to use.
+     */
     public void setCollisionHandler(CollisionHandler collisionHandler) {
         this.collisionHandler = collisionHandler;
     }
 
+    /**
+     * handles collisions when the avatar enters another game object.
+     * @param other - the other game object involved in the collision.
+     * @param collision - the collision data.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -134,6 +160,10 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * changes the avatar's energy by the specified amount.
+     * @param energy - the amount to change the avatar's energy by.
+     */
     public void changeEnergy(float energy) {
         this.energy += energy;
     }
