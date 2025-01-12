@@ -10,25 +10,24 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class Flora {
+    private static final float PROB_OF_TREE = 0.2f;
+    private static final int SKIP_AFTER_TREE = Block.SIZE * 2 * Tree.BRANCH_SIZE;
     private int seed;
-    private float probOfTree;
     private final Function<Float, Float> groundHeight;
 
 
-    public Flora(int seed, float probOfTree, Function<Float, Float> groundHeight) {
+    public Flora(int seed, Function<Float, Float> groundHeight) {
         this.seed = seed;
-        this.probOfTree = probOfTree;
         this.groundHeight = groundHeight;
     }
 
     public List<Tree> createInRange(int minX, int maxX) {
         List<Tree> trees = new ArrayList<>();
-        for (int x = minX; x < maxX; x+=Block.SIZE) {
-            Random rand = new Random(Objects.hash(x, seed));
-            if (rand.nextFloat() < probOfTree) {
+        Random rand = new Random(Objects.hash(minX, seed));
+        for (int x = minX + SKIP_AFTER_TREE; x < maxX; x+=Block.SIZE) {
+            if (rand.nextFloat() < PROB_OF_TREE) {
                 trees.add(new Tree(x, groundHeight.apply((float) x), seed));
-                //TODO: decide if the space is fine
-                x += Block.SIZE * 2 * Tree.BRANCH_SIZE;
+                x += SKIP_AFTER_TREE;
             }
         }
         return trees;
