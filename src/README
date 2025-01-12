@@ -32,9 +32,10 @@ We decided to implement:
  - Encapsulation: used in all main classes (PepseGameManager, Cloud, RainDrop)
 
 Explanation regarding how we chose to implement the game in general:
-1. The different classes we chose to define:
 
-2. The relations between the classes:
-
-3. The design patterns we chose to utilize:
-
+In general, we attempted to fix the design problems from exercise 2 so that the general principles
+still stood, but no passing of gameObjects() or the gameManager instance would go around - mainly
+lambdas are passed around. This means that the control of the behavior is as we see it should be,
+upon the game's manager. We've thought about splitting the lambdas into only "removeGameObject()",
+but that essentially brings us right back to exercise 2's solution - so we thought that it'd be
+best to keep the functionality that we think fits best.
