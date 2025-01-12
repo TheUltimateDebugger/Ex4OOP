@@ -20,10 +20,10 @@ import java.util.Random;
  * @author Tomer Zilbeman
  */
 public class Tree {
-    private static final Color LOG_COLOR = new Color(100, 50, 20); // color of the tree's
-    // log
-    private static final Color LEAFS_COLOR = new Color(50, 200, 30); // color of the tree's
-    // leaves
+    // color of the tree's log
+    private static final Color LOG_COLOR = new Color(100, 50, 20);
+    // color of the tree's leaves
+    private static final Color LEAFS_COLOR = new Color(50, 200, 30);
     // minimum height of the log
     private static final int MINIMUM_LOG_HEIGHT = 5;
     // maximum additional growth for the log
