@@ -12,7 +12,9 @@ import java.awt.*;
 public class SunHalo {
     // color of halo (constant)
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
-    // size of the halo relative to the sun's size
+    /**
+     * size of the halo relative to the sun's size
+     */
     public static final float SIZE_FACTOR = 1.5f;
     /**
      * creates the sun halo object based on the sun's properties.

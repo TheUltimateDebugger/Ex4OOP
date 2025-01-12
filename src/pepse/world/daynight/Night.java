@@ -15,7 +15,10 @@ import java.awt.*;
  */
 public class Night {
     private static final Float MIDNIGHT_OPACITY = 0.5f; // opacity constant
-    public static final String NIGHT_TAG = "night"; // tag for object
+    /**
+     * tag for object
+     */
+    public static final String NIGHT_TAG = "night";
 
     /**
      * creates the night object, sets it up, and applies a transition for opacity.
