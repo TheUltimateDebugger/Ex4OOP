@@ -7,35 +7,24 @@ import danogl.util.Vector2;
 import pepse.util.CollisionHandler;
 
 
-/**
- * raindrop class to represent a single raindrop on-screen
- * @author idomi
- */
 public class RainDrop extends GameObject {
     private static final int GRAVITY = 800; // Downward acceleration
-    private final int window_height;
     private CollisionHandler collisionHandler = null;
-    public RainDrop(Vector2 topLeftCorner, Renderable renderable, int window_height) {
-        super(topLeftCorner, new Vector2(2, 10), renderable);
-        this.window_height = window_height;
+    private final RainDropAction onHitGround;
+
+    public RainDrop(Vector2 topLeftCorner, Renderable renderable, RainDropAction onHitGround) {
+        super(topLeftCorner, new Vector2(20, 30), renderable);
+        this.onHitGround = onHitGround;
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         transform().setAccelerationY(GRAVITY);
         setTag("raindrop");
     }
 
-    public void setCollisionHandler(CollisionHandler collisionHandler) {
-        this.collisionHandler = collisionHandler;
-    }
-
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if (collisionHandler != null) {
-            try {
-                collisionHandler.handleCollision(this);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        if (onHitGround != null) {
+            onHitGround.execute(this);
         }
     }
 

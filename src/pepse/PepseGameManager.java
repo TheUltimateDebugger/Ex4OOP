@@ -15,18 +15,20 @@ import pepse.world.Avatar;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
-import pepse.world.daynight.Cloud;
-import pepse.world.daynight.Night;
-import pepse.world.daynight.Sun;
-import pepse.world.daynight.SunHalo;
+import pepse.world.daynight.*;
 import pepse.world.trees.Flora;
 import pepse.world.trees.Tree;
+
+import java.awt.*;
 import java.util.List;
 
 
 public class PepseGameManager extends GameManager {
     //TODO must be 30
     private static final int CYCLE_LENGTH = 30;
+    private ImageReader imageReader;
+    private Camera camera;
+
     public static void main(String[] args) {
         new PepseGameManager().run();
     }
@@ -35,6 +37,7 @@ public class PepseGameManager extends GameManager {
     public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener
             inputListener, WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
+        this.imageReader = imageReader;
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         int seed = 1;
@@ -65,20 +68,21 @@ public class PepseGameManager extends GameManager {
         Flora flora = new Flora(seed, 0.2f, terrain::groundHeightAt);
         List<Tree> trees = flora.createInRange(0, (int)windowController.getWindowDimensions().x());
         for (Tree t : trees) {
-            add_tree(t);
+            addTree(t);
         }
-        setCamera(new Camera(avatar,
+        camera = new Camera(avatar,
                 windowController.getWindowDimensions().mult(0.1f).subtract(
                         avatar.getTopLeftCorner()),
                 windowController.getWindowDimensions(),
-                windowController.getWindowDimensions()));
+                windowController.getWindowDimensions());
+        setCamera(camera);
         ImageRenderable cloud_img = imageReader.readImage("./assets/cloud.jpg", true);
         Cloud cloud = new Cloud(new Vector2(100, 100), cloud_img,
-                (int) windowController.getWindowDimensions().x());
+                (int) windowController.getWindowDimensions().x(), getAddRainRunnable());
         gameObjects().addGameObject(cloud, Layer.BACKGROUND);
         avatar.addJumpListener(cloud);
     }
-    private void add_tree(Tree tree) {
+    private void addTree(Tree tree) {
         for (Block log : tree.getLog())
         {
             gameObjects().addGameObject(log, Layer.STATIC_OBJECTS);
@@ -91,6 +95,19 @@ public class PepseGameManager extends GameManager {
         }
     }
 
-
-
+    public CloudAction getAddRainRunnable() {
+        return (cloud) -> {
+            int num = (int) (Math.random() * 3) + 1;
+            for (int i = 0; i < num; i++) {
+                RainDrop drop = new RainDrop(cloud.getVisualCenterInAbsoluteSpace(camera.getTopLeftCorner()).subtract(Vector2.UP.mult(40 * i)),
+                        imageReader.readImage("./assets/raindrop.jpg", true),
+                        rainDrop -> {
+                            gameObjects().removeGameObject(rainDrop, Layer.DEFAULT);
+                            System.out.println("REMOVED");
+                        });
+                gameObjects().addGameObject(drop, Layer.DEFAULT);
+                System.out.println("ADDED DROP");
+            }
+        };
+    }
 }
