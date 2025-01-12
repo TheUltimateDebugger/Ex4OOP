@@ -7,9 +7,12 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.ImageRenderable;
 import danogl.util.Vector2;
+import pepse.util.AvatarJumpListener;
 import pepse.util.CollisionHandler;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Avatar extends GameObject {
     private UserInputListener userInputListener;
@@ -19,8 +22,10 @@ public class Avatar extends GameObject {
     private double energy;
     private CollisionHandler collisionHandler = null;
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
-    public Avatar(Vector2 topLeftCorner, UserInputListener inputListener,
-                  ImageReader imageReader) {
+    private List<AvatarJumpListener> jumpListeners = new ArrayList<AvatarJumpListener>();
+
+    public Avatar(Vector2 topLeftCorner, UserInputListener inputListener, ImageReader imageReader) {
+        // call super
         super(topLeftCorner, new Vector2(Block.SIZE, 40),
                 new AnimationRenderable(new ImageRenderable[]{
                         imageReader.readImage("./assets/idle_0.png", true),
@@ -54,6 +59,14 @@ public class Avatar extends GameObject {
         }, 0.2f);
     }
 
+    /**
+     * adds a listener for jump events.
+     * @param listener - the listener to add.
+     */
+    public void addJumpListener(AvatarJumpListener listener) {
+        jumpListeners.add(listener);
+    }
+
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -83,6 +96,9 @@ public class Avatar extends GameObject {
             transform().setVelocityY(VELOCITY_Y);
             energy -= JUMP_COST;
             moved = true;
+            for (AvatarJumpListener listener : jumpListeners) {
+                listener.onAvatarJump();
+            }
         }
         if (!moved) {
             if (transform().getVelocity().y() == 0) {

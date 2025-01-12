@@ -7,14 +7,15 @@ import danogl.util.Vector2;
 import pepse.world.Block;
 
 public class Fruit extends Block {
-    Runnable on_collision;
+//    Runnable on_collision;
     public Fruit(Vector2 topLeftCorner, Renderable renderable) {
         super(topLeftCorner, renderable);
     }
 
-    @Override
-    public void onCollisionEnter(GameObject other, Collision collision) {
-        super.onCollisionEnter(other, collision);
-        this.on_collision.run();
-    }
+    // TODO - necessary?
+//    @Override
+//    public void onCollisionEnter(GameObject other, Collision collision) {
+//        super.onCollisionEnter(other, collision);
+//        this.on_collision.run();
+//    }
 }

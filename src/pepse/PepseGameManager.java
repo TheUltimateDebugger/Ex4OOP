@@ -8,23 +8,21 @@ import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
-import danogl.gui.rendering.OvalRenderable;
-import danogl.gui.rendering.Renderable;
+import danogl.gui.rendering.Camera;
+import danogl.gui.rendering.ImageRenderable;
 import danogl.util.Vector2;
-import pepse.util.ColorSupplier;
 import pepse.world.Avatar;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
+import pepse.world.daynight.Cloud;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
 import pepse.world.trees.Tree;
-
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class PepseGameManager extends GameManager {
     //TODO must be 30
@@ -49,7 +47,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
-        Avatar avatar = new Avatar(new Vector2(50, 50), inputListener, imageReader);
+        Avatar avatar = new Avatar(new Vector2(200, 200), inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
             if (other.getTag().equals("fruit")) {
                 Vector2 pos = other.getTopLeftCorner();
@@ -69,6 +67,16 @@ public class PepseGameManager extends GameManager {
         for (Tree t : trees) {
             add_tree(t);
         }
+        setCamera(new Camera(avatar,
+                windowController.getWindowDimensions().mult(0.1f).subtract(
+                        avatar.getTopLeftCorner()),
+                windowController.getWindowDimensions(),
+                windowController.getWindowDimensions()));
+        ImageRenderable cloud_img = imageReader.readImage("./assets/cloud.jpg", true);
+        Cloud cloud = new Cloud(new Vector2(100, 100), cloud_img,
+                (int) windowController.getWindowDimensions().x());
+        gameObjects().addGameObject(cloud, Layer.BACKGROUND);
+        avatar.addJumpListener(cloud);
     }
     private void add_tree(Tree tree) {
         for (Block log : tree.getLog())
