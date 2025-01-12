@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class Tree {
     private static final Color LOG_COLOR = new Color(100, 50, 20);
