@@ -24,17 +24,24 @@ public class Tree {
     // log
     private static final Color LEAFS_COLOR = new Color(50, 200, 30); // color of the tree's
     // leaves
-    private static final int MINIMUM_LOG_HEIGHT = 5; // minimum height of the log
-    private static final int MAXIMUM_LOG_GROWTH = 2; // maximum additional growth for the log
-    public static final int BRANCH_SIZE = 2; // branch size (how wide the tree branches out)
-    private static final float LEAF_PROB = 0.8f; // probability of a leaf at a given position
+    // minimum height of the log
+    private static final int MINIMUM_LOG_HEIGHT = 5;
+    // maximum additional growth for the log
+    private static final int MAXIMUM_LOG_GROWTH = 2;
+    // branch size (how wide the tree branches out)
+    public static final int BRANCH_SIZE = 2;
+    // probability of a leaf at a given position
+    private static final float LEAF_PROB = 0.8f;
     // probability of fruit on a branch if there are no leafs there
     private static final float FRUIT_PROB = 0.2f;
     //tags
     public static final String LOG_TAG = "tree";
+    //tags
     public static final String LEAF_TAG = "leaf";
+    //tags
     public static final String FRUIT_TAG = "fruit";
 
+    // constant angles
     private static final float INITIAL_LEAF_ANGLE = 0f;
     private static final float FINAL_LEAF_ANGLE = 30f;
     private static final float LEAF_TRANSITION_TIME = 2f;

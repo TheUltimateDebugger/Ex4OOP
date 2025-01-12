@@ -10,13 +10,18 @@ import pepse.util.AvatarJumpListener;
  * @author idomi
  */
 public class Cloud extends GameObject implements AvatarJumpListener {
-    private final int window_width; // the width of the game window, used to reset cloud position
-    public static final Vector2 VELOCITY =
-            new Vector2(20, 0), CLOUD_SIZE = new Vector2(100, 100); // constant velocity
-    // for cloud movement
-    private final CloudAction addRain; // action to add rain when the avatar jumps
-    private final static float IMAGE_SIZE_FACTOR = 0.3f; // image factor
-    public final static String CLOUD_TAG = "cloud"; // tag for cloud objects
+    // the width of the game window, used to reset cloud position
+    private final int window_width;
+    // constant velocity
+    private static final Vector2 VELOCITY = new Vector2(20, 0);
+    // constant size
+    public static final Vector2 CLOUD_SIZE = new Vector2(100, 100);
+    // action to add rain when the avatar jumps
+    private final CloudAction addRain;
+    // image factor
+    private final static float IMAGE_SIZE_FACTOR = 0.3f;
+    // tag for cloud objects
+    public final static String CLOUD_TAG = "cloud";
 
     /**
      * constructs a cloud object.
