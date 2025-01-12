@@ -14,15 +14,17 @@ import java.util.Random;
 public class Terrain {
     private NoiseGenerator ng;
     private int groundHeightAtX0;
+    public static final float GROUND_HEIGHT = 2f/3f;
     private static final int TERRAIN_DEPTH = 20;
+    private static final int NOISE_FACTOR = Block.SIZE * 7;
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
 
     public Terrain(Vector2 windowDimensions, int seed) {
-        this.groundHeightAtX0 = Math.round(windowDimensions.y() * 2/3);
+        this.groundHeightAtX0 = Math.round(windowDimensions.y() * GROUND_HEIGHT);
         this.ng = new NoiseGenerator(seed, this.groundHeightAtX0);
     }
     public float groundHeightAt(float x) {
-        float temp = groundHeightAtX0 + (float) this.ng.noise(x, Block.SIZE *7);
+        float temp = groundHeightAtX0 + (float) this.ng.noise(x, NOISE_FACTOR);
         return (float) Math.floor(temp / Block.SIZE) * Block.SIZE;
     }
 
