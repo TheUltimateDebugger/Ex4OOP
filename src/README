@@ -1,0 +1,40 @@
+tomer_zilb, idomi
+326063047, 215334251
+
+Explanation regarding how we chose to implement the trees package:
+1. The different classes we chose to define:
+
+2. The relations between the classes:
+
+3. The design patterns we chose to utilize:
+
+
+Explanation regarding how we chose to implement the Cloud functionality:
+1. The different classes we chose to define:
+We decided to implement:
+ - Cloud: A general class to represent a single cloud.
+ - CloudAction: A FunctionalInterface interface to essentially allow a lambda function
+ to be passed to the Cloud class.
+ - RainDrop: A class to represent a single drop of rain, mainly just a standalone GameObject
+ - RainDropAction: A FunctionalInterface interface to have the RainDrop do a GameManager action
+ when it collides with other objects.
+ - AvatarJumpListener: An interface that the Cloud class implements so that it can get notified
+ (called) whenever the Avatar jumps
+2. The relations between the classes:
+ - Cloud implements AvatarJumpListener so that it would get notified upon jumps.
+ - CloudAction is held as a property of Cloud so that Cloud objects can call lambda functions given
+ from GameManager that access gameObjects() while blackboxing it to the Cloud itself. We stand
+ by this decision as the things done are the GameManager's duty and not the Cloud's
+ - RainDrop holds RainDropAction as a property for the same reasons as CloudAction.
+3. The design patterns we chose to utilize:
+ - Observer pattern: used in Cloud with AvatarJumpListener.
+ - Command/Lambda/Strategy pattern: used in CloudAction and RainDropAction.
+ - Encapsulation: used in all main classes (PepseGameManager, Cloud, RainDrop)
+
+Explanation regarding how we chose to implement the game in general:
+1. The different classes we chose to define:
+
+2. The relations between the classes:
+
+3. The design patterns we chose to utilize:
+
