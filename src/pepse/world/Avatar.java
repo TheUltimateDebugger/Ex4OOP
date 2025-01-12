@@ -163,11 +163,7 @@ public class Avatar extends GameObject {
         }
 
         if (collisionHandler != null) {
-            try {
-                collisionHandler.handleCollision(other);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            collisionHandler.handleCollision(other);
         }
     }
 
