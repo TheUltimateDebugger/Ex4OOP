@@ -1,9 +1,4 @@
-/**
- * Class representing the terrain of the game world, including the ground and noise-based variations.
- * @author idomi
- */
 package pepse.world;
-
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
@@ -13,21 +8,26 @@ import pepse.util.NoiseGenerator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * Class representing the terrain of the game world, including the ground and noise-based variations.
+ * @author Tomer Zilberman
+ */
 public class Terrain {
-    /** The ground height at x = 0 in the world */
-    private int groundHeightAtX0;
-    /** The noise generator used to create ground height variations */
-    private NoiseGenerator ng;
-    /** The factor representing the ground height fraction of the screen */
+    // The ground height at x = 0 in the world
+    private final int groundHeightAtX0;
+    // The noise generator used to create ground height variations
+    private final NoiseGenerator ng;
+    // The factor representing the ground height fraction of the screen
     public static final float GROUND_HEIGHT = 2f/3f;
-    /** The depth of the terrain (how far the terrain extends vertically) */
+    // The depth of the terrain (how far the terrain extends vertically)
     private static final int TERRAIN_DEPTH = 20;
-    /** The noise factor used for generating the terrain */
+    // The noise factor used for generating the terrain
     private static final int NOISE_FACTOR = Block.SIZE * 7;
-    /** The base color of the ground */
+    // The base color of the ground
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
+    //the tag for the blocks
+    private static final String GROUND_TAG = "ground";
 
     /**
      * Constructs the terrain with the given window dimensions and random seed.
@@ -63,7 +63,7 @@ public class Terrain {
                 Renderable renderable = new RectangleRenderable(ColorSupplier.
                         approximateColor(BASE_GROUND_COLOR));
                 Block block = new Block(new Vector2(i, highestY + (Block.SIZE * j)), renderable);
-                block.setTag("ground");
+                block.setTag(GROUND_TAG);
                 result.add(block);
             }
         }

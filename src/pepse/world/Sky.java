@@ -1,7 +1,3 @@
-/**
- * Class representing the sky in the game world.
- * @author idomi
- */
 package pepse.world;
 
 import danogl.GameObject;
@@ -10,9 +6,15 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import java.awt.*;
 
+/**
+ * Class representing the sky in the game world.
+ * @author Tomer Zilberman
+ */
 public class Sky {
-    /** The basic color of the sky */
+    // The basic color of the sky
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
+    //the sky tag
+    private static final String SKY_TAG = "sky";
 
     /**
      * Creates a GameObject representing the sky with the specified window dimensions.
@@ -24,7 +26,7 @@ public class Sky {
                 Vector2.ZERO, windowDimensions,
                 new RectangleRenderable(BASIC_SKY_COLOR));
         sky.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        sky.setTag("sky");
+        sky.setTag(SKY_TAG);
         return sky;
     }
 }

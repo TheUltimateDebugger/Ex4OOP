@@ -1,24 +1,23 @@
-/**
- * class representing a chunk of terrain with trees and terrain blocks.
- * @author idomi
- */
+
 package pepse.world;
 
-import danogl.gui.WindowController;
-import danogl.util.Vector2;
 import pepse.world.trees.Flora;
 import pepse.world.trees.Tree;
 import java.util.List;
 
+/**
+ * class representing a chunk of terrain with trees and terrain blocks.
+ * @author Tomer Zilberman
+ */
 public class Chunk {
     // the minimum x-coordinate of the chunk
-    private int minX;
+    private final int minX;
     // the maximum x-coordinate of the chunk
-    private int maxX;
+    private final int maxX;
     // the list of terrain blocks in the chunk
-    private List<Block> terrain;
+    private final List<Block> terrain;
     // the list of trees in the chunk
-    private List<Tree> trees;
+    private final List<Tree> trees;
 
     /**
      * constructor to create a chunk of terrain with trees.

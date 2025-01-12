@@ -110,7 +110,6 @@ public class Tree {
     private Block create_leaf(Vector2 pos, Renderable renderer_leaf, Random rand) {
         Block leaf = new Block(pos, renderer_leaf);
         leaf.setTag(LEAF_TAG);
-        //TODO: decide on good parameters to this
         Runnable supply_angle = () -> new Transition<>(leaf,
                 (Float a) -> leaf.renderer().setRenderableAngle(a),
                 INITIAL_LEAF_ANGLE, FINAL_LEAF_ANGLE, Transition.LINEAR_INTERPOLATOR_FLOAT,

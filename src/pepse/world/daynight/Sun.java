@@ -14,6 +14,7 @@ import java.awt.*;
  */
 public class Sun {
 
+    //sun constants
     private static final float SIZE = 100;
     private static final float INITIAL_ANGLE = 0f;
     private static final float FINAL_ANGLE = 360f;
