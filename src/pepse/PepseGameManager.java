@@ -33,8 +33,6 @@ import pepse.world.trees.Tree;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import java.awt.*;
-import java.util.List;
 
 public class PepseGameManager extends GameManager {
     /** The length of the day-night cycle in game time. */
@@ -90,7 +88,7 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // Initialize terrain and environment objects
-        int seed = 2;
+        int seed = 1;
         terrain = new Terrain(windowController.getWindowDimensions(), seed);
         GameObject night = Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
@@ -105,7 +103,9 @@ public class PepseGameManager extends GameManager {
                 gameObjects().removeGameObject(other, Layer.STATIC_OBJECTS);
                 avatar.changeEnergy(10);
                 new ScheduledTask(avatar, CYCLE_LENGTH, false, () -> {
-                    gameObjects().addGameObject(other, Layer.STATIC_OBJECTS);
+                    if (other.getCenter().x() > chunks.peekFirst().getMinX() &&
+                            other.getCenter().x() < chunks.peekLast().getMaxX())
+                        gameObjects().addGameObject(other, Layer.STATIC_OBJECTS);
                 });
             }
         });
