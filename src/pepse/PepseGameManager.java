@@ -83,10 +83,6 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
 //        Flora flora = new Flora(seed, 0.2f, terrain::groundHeightAt);
         Flora flora = new Flora(seed, terrain::groundHeightAt);
-        List<Tree> trees = flora.createInRange(0, (int)windowController.getWindowDimensions().x());
-        for (Tree t : trees) {
-            addTree(t);
-        }
         camera = new Camera(avatar,
                 windowController.getWindowDimensions().mult(0.1f).subtract(
                         avatar.getTopLeftCorner()),
@@ -165,9 +161,11 @@ public class PepseGameManager extends GameManager {
 
     public CloudAction getAddRainRunnable() {
         return (cloud) -> {
-            int num = (int) (Math.random() * 3) + 1;
+            int num = (int) (Math.random() * 4) + 1;
             for (int i = 0; i < num; i++) {
-                RainDrop drop = new RainDrop(cloud.getVisualCenterInAbsoluteSpace(camera.getTopLeftCorner()).subtract(Vector2.UP.mult(40 * i)),
+                RainDrop drop = new RainDrop(cloud.getVisualCenterInAbsoluteSpace(
+                        camera.getTopLeftCorner()).subtract(new Vector2(
+                                (int) (Math.random() * 40 - 20), 40 * i)),
                         imageReader.readImage("./assets/raindrop.jpg", true),
                         rainDrop -> {
                             gameObjects().removeGameObject(rainDrop, Layer.DEFAULT);
