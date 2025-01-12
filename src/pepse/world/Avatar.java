@@ -1,7 +1,4 @@
-/**
- * class representing the avatar character in the game with physics, animation, and energy management.
- * @author idomi
- */
+
 package pepse.world;
 
 import danogl.GameObject;
@@ -18,14 +15,23 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
+/**
+ * class representing the avatar character in the game with physics, animation, and energy management.
+ * @author idomi
+ */
 public class Avatar extends GameObject {
     // inputListener property
     private UserInputListener userInputListener;
-    // constants
+    // movement constants
     private static final int GRAVITY = 800, VELOCITY_X =153, VELOCITY_Y = -600;
-    public static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
-            JUMP_COST = 10f, STATIC_GAIN = 1f;
+    // energy constants
+    public static final double MAX_ENERGY = 100f;
+    // energy constants
+    public static final double MOVE_COST = 0.5f;
+    // energy constants
+    public static final double JUMP_COST = 10f;
+    // energy constants
+    public static final double STATIC_GAIN = 1f;
     // energy property
     private double energy;
     // handler to become lambda
