@@ -1,7 +1,3 @@
-/**
- * class for generating and creating trees in the game world.
- * @author idomi
- */
 package pepse.world.trees;
 import pepse.world.Block;
 import java.util.ArrayList;
@@ -10,6 +6,10 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
+/**
+ * class representing a block in the game world with fixed size and immovable physics.
+ * @author idomi
+ */
 public class Flora {
     //the probability for a tree to be created (if it won't intersect other trees)
     private static final float PROB_OF_TREE = 0.2f;

@@ -6,5 +6,8 @@ package pepse.util;
  */
 @FunctionalInterface
 public interface AvatarJumpListener {
+    /**
+     * a listener function that activates when the avatar jumps
+     */
     void onAvatarJump();
 }

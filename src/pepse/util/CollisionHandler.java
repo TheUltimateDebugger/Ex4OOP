@@ -7,5 +7,9 @@ import danogl.GameObject;
  * @author idomi
  */
 public interface CollisionHandler {
-    void handleCollision(GameObject other) throws InterruptedException;
+    /**
+     * a listener function that activates when the avatar collide with an object
+     * @param other the object the avatar collide with
+     */
+    void handleCollision(GameObject other);
 }
