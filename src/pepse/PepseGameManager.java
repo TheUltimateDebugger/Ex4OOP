@@ -3,6 +3,7 @@ package pepse;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
+import danogl.components.CoordinateSpace;
 import danogl.components.ScheduledTask;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
@@ -10,6 +11,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.gui.rendering.Camera;
 import danogl.gui.rendering.ImageRenderable;
+import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
 import pepse.world.*;
 import pepse.world.daynight.Cloud;
@@ -37,6 +39,7 @@ public class PepseGameManager extends GameManager {
     private static final int RENDER_DISTANT = 3;
     private Deque<Chunk> chunks;
     private int windowWidth;
+    private TextRenderable energyDisplay;
 
     public PepseGameManager() {
         chunks = new ArrayDeque<>();
@@ -72,7 +75,6 @@ public class PepseGameManager extends GameManager {
                 Vector2 pos = other.getTopLeftCorner();
                 gameObjects().removeGameObject(other, Layer.STATIC_OBJECTS);
                 avatar.changeEnergy(10);
-                System.out.println("RAN1");
                 new ScheduledTask(avatar, CYCLE_LENGTH, false, () -> {
                     gameObjects().addGameObject(other, Layer.STATIC_OBJECTS);
                 });
@@ -98,7 +100,22 @@ public class PepseGameManager extends GameManager {
         for (int i = -RENDER_DISTANT; i <= RENDER_DISTANT; i++) {
             add_chunk(new Chunk(i*windowWidth, (i+1)*windowWidth, terrain, flora));
         }
+
+
+        energyDisplay = new TextRenderable("Energy: 100");
+        GameObject energyDisplayObject = new GameObject(
+                new Vector2(0, 0), // Top-left corner of the screen
+                new Vector2(200, 30), // Example size
+                energyDisplay
+        );
+        energyDisplayObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        gameObjects().addGameObject(energyDisplayObject, Layer.UI);
+        avatar.setOnEnergyUpdate((energy) -> {energyDisplay.setString("Energy: " + energy);});
     }
+
+    public void updateEnergyDisplay(int energy) {
+    }
+
     private void addTree(Tree tree) {
         for (Block log : tree.getLog())
         {
@@ -169,11 +186,10 @@ public class PepseGameManager extends GameManager {
                         imageReader.readImage("./assets/raindrop.jpg", true),
                         rainDrop -> {
                             gameObjects().removeGameObject(rainDrop, Layer.DEFAULT);
-                            System.out.println("REMOVED");
                         });
                 gameObjects().addGameObject(drop, Layer.DEFAULT);
-                System.out.println("ADDED DROP");
             }
         };
     }
+
 }

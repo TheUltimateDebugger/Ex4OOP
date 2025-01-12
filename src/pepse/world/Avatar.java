@@ -13,16 +13,19 @@ import pepse.util.CollisionHandler;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Avatar extends GameObject {
     private UserInputListener userInputListener;
     private static final int GRAVITY = 800, VELOCITY_X =400, VELOCITY_Y = -600;
-    private static final double STARTING_ENERGY = 100f, MOVE_COST = 0.5f,
+    private static final double MAX_ENERGY = 100f, MOVE_COST = 0.5f,
             JUMP_COST = 10f, STATIC_GAIN = 1f;
     private double energy;
     private CollisionHandler collisionHandler = null;
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
-    private List<AvatarJumpListener> jumpListeners = new ArrayList<AvatarJumpListener>();
+    private List<AvatarJumpListener> jumpListeners = new ArrayList<>();
+    private Consumer<Double> onEnergyUpdate;
+
 
     public Avatar(Vector2 topLeftCorner, UserInputListener inputListener, ImageReader imageReader) {
         // call super
@@ -36,7 +39,7 @@ public class Avatar extends GameObject {
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         transform().setAccelerationY(GRAVITY);
         this.userInputListener = inputListener;
-        this.energy = STARTING_ENERGY;
+        this.energy = MAX_ENERGY;
         this.idleAnimation = new AnimationRenderable(new ImageRenderable[]{
                 imageReader.readImage("./assets/idle_0.png", true),
                 imageReader.readImage("./assets/idle_1.png", true),
@@ -65,6 +68,10 @@ public class Avatar extends GameObject {
      */
     public void addJumpListener(AvatarJumpListener listener) {
         jumpListeners.add(listener);
+    }
+
+    public void setOnEnergyUpdate(Consumer<Double> onEnergyUpdate) {
+        this.onEnergyUpdate = onEnergyUpdate;
     }
 
     @Override
@@ -103,9 +110,12 @@ public class Avatar extends GameObject {
         if (!moved) {
             if (transform().getVelocity().y() == 0) {
                 renderer().setRenderable(idleAnimation);
+                energy += STATIC_GAIN;
             }
-            energy += STATIC_GAIN;
+            if (energy > MAX_ENERGY)
+                energy = MAX_ENERGY;
         }
+        onEnergyUpdate.accept(energy);
     }
 
     public void setCollisionHandler(CollisionHandler collisionHandler) {
