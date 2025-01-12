@@ -20,27 +20,27 @@ import java.util.function.Consumer;
  * @author idomi
  */
 public class Avatar extends GameObject {
-    // inputListener property
+    /** inputListener property */
     private UserInputListener userInputListener;
-    // movement constants
+    /* movement constants */
     private static final int GRAVITY = 800, VELOCITY_X =153, VELOCITY_Y = -600;
-    // energy constants
+    /** maximum energy constant */
     public static final double MAX_ENERGY = 100f;
-    // energy constants
-    public static final double MOVE_COST = 0.5f;
-    // energy constants
-    public static final double JUMP_COST = 10f;
-    // energy constants
-    public static final double STATIC_GAIN = 1f;
-    // energy property
+    /* energy constant */
+    private static final double MOVE_COST = 0.5f;
+    /* energy constan */
+    private static final double JUMP_COST = 10f;
+    /* energy consta */
+    private static final double STATIC_GAIN = 1f;
+    /* energy property */
     private double energy;
-    // handler to become lambda
+    /* handler to become lambda */
     private CollisionHandler collisionHandler = null;
-    // anmiations
+    /* anmiations */
     private final AnimationRenderable idleAnimation, jumpAnimation, runAnimation;
-    // list of listeners
+    /* list of listeners */
     private List<AvatarJumpListener> jumpListeners = new ArrayList<>();
-    // lambda
+    /* lambda */
     private Consumer<Double> onEnergyUpdate;
 
     /**

@@ -14,13 +14,13 @@ public class Cloud extends GameObject implements AvatarJumpListener {
     private final int window_width;
     // constant velocity
     private static final Vector2 VELOCITY = new Vector2(20, 0);
-    // constant size
+    /** constant size */
     public static final Vector2 CLOUD_SIZE = new Vector2(100, 100);
     // action to add rain when the avatar jumps
     private final CloudAction addRain;
     // image factor
     private final static float IMAGE_SIZE_FACTOR = 0.3f;
-    // tag for cloud objects
+    /** tag for cloud objects */
     public final static String CLOUD_TAG = "cloud";
 
     /**

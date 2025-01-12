@@ -20,7 +20,7 @@ public class Sun {
     private static final float INITIAL_ANGLE = 0f;
     //sun constants
     private static final float FINAL_ANGLE = 360f;
-    //sun constants
+    /** sun constants */
     public static final String SUN_TAG = "sun";
 
     /**

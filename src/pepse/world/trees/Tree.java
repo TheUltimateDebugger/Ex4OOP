@@ -28,17 +28,17 @@ public class Tree {
     private static final int MINIMUM_LOG_HEIGHT = 5;
     // maximum additional growth for the log
     private static final int MAXIMUM_LOG_GROWTH = 2;
-    // branch size (how wide the tree branches out)
+    /** branch size (how wide the tree branches out) */
     public static final int BRANCH_SIZE = 2;
     // probability of a leaf at a given position
     private static final float LEAF_PROB = 0.8f;
     // probability of fruit on a branch if there are no leafs there
     private static final float FRUIT_PROB = 0.2f;
-    //tags
+    /** tags */
     public static final String LOG_TAG = "tree";
-    //tags
+    /** tags */
     public static final String LEAF_TAG = "leaf";
-    //tags
+    /** tags */
     public static final String FRUIT_TAG = "fruit";
 
     // constant angles
