@@ -11,7 +11,7 @@ import danogl.util.Vector2;
 import java.awt.*;
 
 public class Sky {
-    /** The basic color of the sky */
+    //The basic color of the sky
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
 
     /**

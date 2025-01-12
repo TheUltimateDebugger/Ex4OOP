@@ -1,5 +1,6 @@
 /**
- * Class representing the terrain of the game world, including the ground and noise-based variations.
+ * Class representing the terrain of the game world, including the ground and
+ * noise-based variations.
  * @author idomi
  */
 package pepse.world;
@@ -16,17 +17,17 @@ import java.util.List;
 import java.util.Random;
 
 public class Terrain {
-    /** The ground height at x = 0 in the world */
+    // The ground height at x = 0 in the world
     private int groundHeightAtX0;
-    /** The noise generator used to create ground height variations */
+    // The noise generator used to create ground height variations
     private NoiseGenerator ng;
-    /** The factor representing the ground height fraction of the screen */
+    // The factor representing the ground height fraction of the screen
     public static final float GROUND_HEIGHT = 2f/3f;
-    /** The depth of the terrain (how far the terrain extends vertically) */
+    // The depth of the terrain (how far the terrain extends vertically)
     private static final int TERRAIN_DEPTH = 20;
-    /** The noise factor used for generating the terrain */
+    // The noise factor used for generating the terrain
     private static final int NOISE_FACTOR = Block.SIZE * 7;
-    /** The base color of the ground */
+    // The base color of the ground
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
 
     /**

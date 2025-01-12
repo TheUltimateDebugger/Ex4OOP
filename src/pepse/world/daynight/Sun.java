@@ -14,6 +14,7 @@ import java.awt.*;
  */
 public class Sun {
 
+    // constants
     private static final float SIZE = 100;
     private static final float INITIAL_ANGLE = 0f;
     private static final float FINAL_ANGLE = 360f;
@@ -42,7 +43,7 @@ public class Sun {
                                 .add(cycleCenter)),
                 INITIAL_ANGLE, FINAL_ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
-                Transition.TransitionType.TRANSITION_LOOP, null); // loop around the cycle
+                Transition.TransitionType.TRANSITION_LOOP, null);
         return sun; // return the sun object
     }
 }
