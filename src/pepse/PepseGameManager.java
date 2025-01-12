@@ -37,6 +37,8 @@ public class PepseGameManager extends GameManager {
     private static final int RENDER_DISTANT = 3;
     private Deque<Chunk> chunks;
     private int windowWidth;
+    private Terrain terrain;
+    private Flora flora;
 
     public PepseGameManager() {
         chunks = new ArrayDeque<>();
@@ -61,7 +63,7 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         int seed = 2;
-        Terrain terrain = new Terrain(windowController.getWindowDimensions(), seed);
+        terrain = new Terrain(windowController.getWindowDimensions(), seed);
         GameObject night = Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
         GameObject sun = Sun.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
@@ -81,8 +83,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
         GameObject sun_halo = SunHalo.create(sun);
         gameObjects().addGameObject(sun_halo, Layer.BACKGROUND);
-//        Flora flora = new Flora(seed, 0.2f, terrain::groundHeightAt);
-        Flora flora = new Flora(seed, terrain::groundHeightAt);
+        flora = new Flora(seed, terrain::groundHeightAt);
         camera = new Camera(avatar,
                 windowController.getWindowDimensions().mult(0.1f).subtract(
                         avatar.getTopLeftCorner()),
