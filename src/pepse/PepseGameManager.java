@@ -40,7 +40,7 @@ public class PepseGameManager extends GameManager {
     /** The length of the day-night cycle in game time. */
     private static final int CYCLE_LENGTH = 30;
     /** The render distance in terms of chunks. */
-    private static final int RENDER_DISTANT = 3;
+    private static final int RENDER_DISTANT = 1;
     /** A queue of chunks to manage rendering. */
     private Deque<Chunk> chunks;
     /** The width of the window. */
@@ -51,6 +51,7 @@ public class PepseGameManager extends GameManager {
     private Terrain terrain;
     /** The flora object representing trees and plant life. */
     private Flora flora;
+    private Avatar avatar;
 
     /**
      * Constructs the PepseGameManager.
@@ -71,6 +72,7 @@ public class PepseGameManager extends GameManager {
         new PepseGameManager().run();
     }
 
+
     /**
      * Initializes the game, sets up the environment, and creates game objects.
      * @param imageReader - used to read images for game objects.
@@ -87,7 +89,6 @@ public class PepseGameManager extends GameManager {
         // Set up background and environment objects
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
-
         // Initialize terrain and environment objects
         int seed = 2;
         terrain = new Terrain(windowController.getWindowDimensions(), seed);
@@ -97,7 +98,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
 
         // Set up avatar
-        Avatar avatar = new Avatar(new Vector2(200, 200), inputListener, imageReader);
+        avatar = new Avatar(new Vector2(200, 200), inputListener, imageReader);
         avatar.setCollisionHandler(other -> {
             if (other.getTag().equals("fruit")) {
                 Vector2 pos = other.getTopLeftCorner();
@@ -143,6 +144,26 @@ public class PepseGameManager extends GameManager {
         energyDisplayObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects().addGameObject(energyDisplayObject, Layer.UI);
         avatar.setOnEnergyUpdate((energy) -> { energyDisplay.setString("Energy: " + energy); });
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        //too left
+        if (avatar.getCenter().x() - chunks.peekFirst().getMinX() < windowWidth * (RENDER_DISTANT-1)) {
+            System.out.println("remove1: " + chunks.peekLast().getMinX() + " add: " + chunks.peekFirst().getMinX());
+            add_chunk(new Chunk(chunks.peekFirst().getMinX() - windowWidth,
+                    chunks.peekFirst().getMaxX() - windowWidth, terrain, flora));
+            remove_chunk(false);
+
+        }
+        //too right
+        else if (chunks.peekLast().getMaxX() - avatar.getCenter().x() < windowWidth * (RENDER_DISTANT-1)) {
+            System.out.println("remove2: " + chunks.peekFirst().getMinX() + " add: "+ chunks.peekLast().getMinX());
+            remove_chunk(true);
+            add_chunk(new Chunk(chunks.peekLast().getMinX() + windowWidth,
+                    chunks.peekLast().getMaxX() + windowWidth, terrain, flora));
+        }
     }
 
     /**
@@ -192,10 +213,10 @@ public class PepseGameManager extends GameManager {
         if (chunks.isEmpty()) {
             chunks.add(chunk);
         }
-        else if (chunks.peekFirst().getMinX() > chunk.getMaxX()) {
+        else if (chunks.peekFirst().getMinX() >= chunk.getMaxX()) {
             chunks.addFirst(chunk);
         }
-        else if (chunks.peek().getMaxX() < chunk.getMinX()) {
+        else if (chunks.peekLast().getMaxX() <= chunk.getMinX()) {
             chunks.addLast(chunk);
         }
         for (Block b : chunk.getTerrainBlocks()) {
