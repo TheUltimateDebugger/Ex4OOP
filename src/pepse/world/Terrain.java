@@ -28,7 +28,7 @@ public class Terrain {
     // The base color of the ground
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     //the tag for the blocks
-    private static final String GROUND_TAG = "ground";
+    public static final String GROUND_TAG = "ground";
 
     /**
      * Constructs the terrain with the given window dimensions and random seed.

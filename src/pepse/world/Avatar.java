@@ -158,7 +158,7 @@ public class Avatar extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if(other.getTag().equals("block")){
+        if(other.getTag().equals(Terrain.GROUND_TAG)){
             this.transform().setVelocityY(0);
         }
 
